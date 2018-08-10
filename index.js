@@ -1,6 +1,12 @@
 const program = require('commander');
 const HCCrawler = require('headless-chrome-crawler');
-const BaseCache = require('headless-chrome-crawler/cache/base');
+const retireJs = require('retire');
+const URI = require('urijs');
+const request = require('request');
+
+const headers = require('./src/headers');
+const meta = require('./src/meta');
+const url = require('./src/url');
 
 /*
  * Commander setup
@@ -11,25 +17,93 @@ program
     .option('--obey', 'Obey robots.txt (defaults to false)')
     .parse(process.argv);
 
-console.log(`Preparing to crawl ${program.url}`);
+const hostname = new URI(program.url).hostname();
+
+console.log(`Preparing to crawl ${program.url} (${hostname})`);
 console.log(`Max depth: ${program.maxDepth}`);
 console.log(`Respect robots.txt? ${program.obey ? 'true' : 'false'}`);
 
-const protocolRegEx = /https:\/\//ig;
-const domain = protocolRegEx.test(program.url) ? program.url.replace('https://', '') : program.url.replace('http://', '');
+/*
+ * RetireJS shim (from https://github.com/RetireJS/retire.js/blob/master/chrome/js/background.js)
+ */
+// let retireJsRepo, vulnerableJs;
+//
+// function download(url) {
+//     return new Promise((resolve, reject) => {
+//         request(url, (error, response, body) => {
+//             if (error) {
+//                 console.warn("Got " + response.statusCode + " when trying to download " + url);
+//                 reject(response);
+//             }
+//
+//             resolve(body);
+//         });
+//     });
+// }
+//
+// function downloadRetireJS() {
+//     const repoUrl = "https://raw.githubusercontent.com/RetireJS/retire.js/master/repository/jsrepository.json";
+//     const updatedAt = Date.now();
+//     console.log("Downloading RetireJS repo ...");
+//
+//     return new Promise((resolve, reject) => {
+//         download(repoUrl + "?" + updatedAt)
+//             .then((repoData) => {
+//             retireJsRepo = JSON.parse(repoData);
+//             console.log("RetireJS loaded!");
+//
+//             vulnerableJs = {};
+//             // setFuncs();
+//             resolve();
+//         });
+//     });
+// }
+//
+// function getFuncs() {
+//     const retireJsFuncs = {};
+//
+//     for (let component in retireJsRepo) {
+//         const results = [];
+//         const funcs = retireJsRepo[component].extractors.func;
+//
+//         if (funcs) {
+//             for (let i = 0; i < funcs.length; i++) {
+//                 const result = (new Function(funcs[i]))();
+//                 results.push(result);
+//             }
+//
+//             retireJsFuncs[component] = results;
+//         }
+//     }
+//
+//     return retireJsFuncs;
+// }
+function downloadRetireJS() {
+    return Promise.resolve();
+}
+
 
 /*
  * Run the program
  */
 function launch() {
     return HCCrawler.launch({
+        evaluatePage: meta.getMetaTags,
         onSuccess: result => {
-            console.log(`Requested ${result.options.url}`);
+            url.addUrl(result.options.url);
+            headers.mergeHeaders(result.response.headers);
+            meta.mergeMetaTags(result.result);
+
+
+            // const results = retireJs.scanUri(result.options.url, retireJsRepo);
+            // vulnerableJs = retireJs.isVulnerable(results);
+            // console.log(result.result);
         }
     });
 }
 
-(async () => {
+// download the repo first; then we can begin!
+downloadRetireJS().then(async () => {
     // Launch the crawler with persisting cache
     const crawler = await launch();
 
@@ -38,9 +112,11 @@ function launch() {
         url: program.url,
         maxDepth: program.maxDepth,
         obeyRobotsTxt: program.obey,
-        allowedDomains: [domain]
+        allowedDomains: [hostname]
     });
 
     await crawler.onIdle();
     await crawler.close(); // Close the crawler but cache won't be cleared
-})();
+
+    console.log(JSON.stringify(headers.serializeHeaders()));
+});

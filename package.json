@@ -1,18 +1,24 @@
 {
-  "name": "recon",
+  "name": "recon-spider",
   "version": "0.0.1",
   "description": "",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/arthurakay/recon-spider"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arthur Kay",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "commander": "^2.17.1",
     "headless-chrome-crawler": "^1.8.0",
     "redis": "^2.8.0",
+    "request": "^2.88.0",
     "retire": "^1.6.2",
+    "urijs": "^1.19.1",
     "wappalyzer": "^5.5.1"
   }
 }
