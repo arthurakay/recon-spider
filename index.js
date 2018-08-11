@@ -4,9 +4,9 @@ const retireJs = require('retire');
 const URI = require('urijs');
 const request = require('request');
 
-const headers = require('./src/headers');
-const meta = require('./src/meta');
-const url = require('./src/url');
+const headers = require('./server/headers');
+const meta = require('./server/meta');
+const url = require('./server/url');
 
 /*
  * Commander setup

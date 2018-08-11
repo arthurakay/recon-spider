@@ -2,23 +2,40 @@
   "name": "recon-spider",
   "version": "0.0.1",
   "description": "",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/arthurakay/recon-spider"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arthurakay/recon-spider"
   },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/webpack",
+    "start": "npm run build && node server.js"
   },
   "author": "Arthur Kay",
   "license": "GPL-3.0",
   "dependencies": {
     "commander": "^2.17.1",
+    "express": "^4.16.3",
     "headless-chrome-crawler": "^1.8.0",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "retire": "^1.6.2",
+    "typescript": "^3.0.1",
     "urijs": "^1.19.1",
     "wappalyzer": "^5.5.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.4.9",
+    "@types/react-dom": "^16.0.7",
+    "html-webpack-plugin": "^3.2.0",
+    "source-map-loader": "^0.2.3",
+    "ts-loader": "^4.4.2",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-middleware": "^3.1.3",
+    "webpack-hot-middleware": "^2.22.3"
   }
 }
