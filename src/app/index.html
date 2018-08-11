@@ -8,5 +8,14 @@
 </head>
 <body>
     <div id="root" />
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        window.SOCKET = io();
+
+        window.SOCKET.on('api', (jsonMsg) => {
+            console.log(JSON.parse(jsonMsg));
+        });
+    </script>
 </body>
 </html>

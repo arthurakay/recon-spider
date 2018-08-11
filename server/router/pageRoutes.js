@@ -23,7 +23,7 @@ router.post('/api/crawl', (req, res) => {
 
     crawl({domain, hostname, maxDepth, obey});
 
-    res.send('check the console');
+    res.send('');
 });
 
 module.exports = router;

@@ -24,6 +24,7 @@
     "redis": "^2.8.0",
     "request": "^2.88.0",
     "retire": "^1.6.2",
+    "socket.io": "^2.1.1",
     "typescript": "^3.0.1",
     "urijs": "^1.19.1",
     "wappalyzer": "^5.5.1"

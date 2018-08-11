@@ -4,6 +4,8 @@ const headers = require('../headers');
 const meta = require('../meta');
 const url = require('../url');
 
+const {sendMsg} = require('../socket');
+
 /*
  * Run the program
  */
@@ -41,7 +43,8 @@ async function crawl({domain, maxDepth, obey, hostname}) {
     await crawler.onIdle();
     await crawler.close(); // Close the crawler but cache won't be cleared
 
-    console.log(JSON.stringify(headers.serializeHeaders()));
+    console.log('issuing socket response');
+    sendMsg('api', JSON.stringify(headers.serializeHeaders()));
 }
 
 module.exports = {
