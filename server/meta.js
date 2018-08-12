@@ -1,5 +1,12 @@
 const META_TAGS = new Map();
 
+class MetaTag {
+    constructor({name = '', values = []}) {
+        this.name = name;
+        this.values = values;
+    }
+}
+
 function getMetaTags() {
     const meta = {};
 
@@ -36,13 +43,18 @@ function mergeMetaTags(newTags) {
 }
 
 function serializeMetaTags() {
-    const json = {};
+    const results = [];
 
-    META_TAGS.forEach((valueSet, key) => {
-        json[key] = Array.from(valueSet);
+    META_TAGS.forEach((valueSet, name) => {
+        results.push(
+            new MetaTag({
+                name,
+                values: Array.from(valueSet)
+            })
+        )
     });
 
-    return json;
+    return results;
 }
 
 module.exports = {

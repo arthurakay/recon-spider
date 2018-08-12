@@ -43,8 +43,12 @@ async function crawl({domain, maxDepth, obey, hostname}) {
     await crawler.onIdle();
     await crawler.close(); // Close the crawler but cache won't be cleared
 
-    console.log('issuing socket response');
-    sendMsg('api', JSON.stringify(headers.serializeHeaders()));
+    console.log('Emitting socket response "api"...');
+    sendMsg('api', JSON.stringify({
+        headers: headers.serializeHeaders(),
+        url: url.getUrls(),
+        metaTags: meta.serializeMetaTags()
+    }));
 }
 
 module.exports = {
