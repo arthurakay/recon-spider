@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import PageWrapper from './components/PageWrapper';
+import PageWrapper from './views/PageWrapper';
 import {initSocket} from './utils/SocketUtils';
 
 declare let module: any;

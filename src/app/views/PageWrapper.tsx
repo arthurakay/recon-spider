@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Provider} from 'mobx-react';
 import Stores from '../stores/_AllStores';
 import Config from './Config';
+import MainContent from './MainContent';
 
 const PageWrapper = () => (
     <div id="main" className="container-fluid">
@@ -10,7 +11,7 @@ const PageWrapper = () => (
                 <Config />
             </div>
             <div className="col-md-9">
-                <div className="loading" />
+                <MainContent />
             </div>
         </div>
     </div>

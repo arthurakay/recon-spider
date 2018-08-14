@@ -35,6 +35,7 @@ export default class Config extends React.Component<ConfigProps, {}> {
                             type="text"
                             className="form-control"
                             placeholder="https://www.domain.com"
+                            disabled={this.props.crawlerStore.loading}
                         />
 
                         <label htmlFor="maxDepth">Maximum Depth:</label>
@@ -44,6 +45,7 @@ export default class Config extends React.Component<ConfigProps, {}> {
                             type="number"
                             defaultValue="2"
                             className="form-control"
+                            disabled={this.props.crawlerStore.loading}
                         />
 
                         <button
