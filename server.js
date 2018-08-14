@@ -6,7 +6,10 @@ const path = require('path'),
     http = require('http');
 
 const Routes = require('./server/router/pageRoutes'),
-    socket = require('./server/socket');
+    socket = require('./server/socket'),
+    {downloadRetireJS} = require('./server/scripts/retire');
+
+downloadRetireJS();
 
 const app = express(),
     port = process.env.PORT || 3000;

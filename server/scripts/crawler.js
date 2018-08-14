@@ -3,6 +3,7 @@ const HCCrawler = require('headless-chrome-crawler');
 const headers = require('../headers');
 const meta = require('../meta');
 const url = require('../url');
+const {getExtractors} = require('../scripts/retire');
 
 const {sendMsg} = require('../socket');
 
@@ -11,11 +12,97 @@ const {sendMsg} = require('../socket');
  */
 function launch() {
     return HCCrawler.launch({
-        evaluatePage: meta.getMetaTags,
+        /**
+         * Function that runs in the context of the browser window
+         */
+        evaluatePage: async () => {
+            const extractors = await window.__exposedFunction();
+
+            /* Utility functions */
+            function detectJS() {
+                const retireJs = {};
+
+                for (let component in extractors) {
+                    const results = [];
+                    const funcs = extractors[component];
+
+                    if (funcs) {
+                        for (let i = 0; i < funcs.length; i++) {
+                            try {
+                                const result = eval(funcs[i]);
+                                results.push(result);
+                            } catch (e) {
+                                // do nothing
+                            }
+                        }
+
+                        retireJs[component] = results;
+                    }
+                }
+
+                return retireJs;
+            }
+
+            function getMetaTags() {
+                const meta = {};
+
+                const tags = document.getElementsByTagName('meta');
+
+                for (let i = 0; i < tags.length; i++) {
+                    const tag = tags[i];
+                    const name = tag.name || tag['http-equiv'];
+
+                    if (name) {
+                        if (!meta[name]) {
+                            meta[name] = [];
+                        }
+                        meta[name].push(tag.content);
+                    }
+                }
+
+                return meta;
+            }
+
+            /* Define the return values */
+            let returnData = {};
+            let error = false;
+
+            try {
+                returnData = {
+                    js: detectJS(),
+                    vulnerabilities: null,
+                    metaTags: getMetaTags()
+                };
+            } catch (e) {
+                error = true;
+            }
+
+            return {
+                error: error,
+                data: returnData
+            };
+        },
+
+        /**
+         * Expose a function to the window object; runs in the context of Node.js
+         */
+        exposedFunctionName: '__exposedFunction',
+        exposeFunction: () => getExtractors(),
+
+        /**
+         * Do some stuff after evaluatePage() returns (in Node.js context)
+         */
         onSuccess: result => {
             url.addUrl(result.options.url);
             headers.mergeHeaders(result.response.headers);
-            meta.mergeMetaTags(result.result);
+
+            const resultData = result.result;
+
+            if (!resultData.error) {
+                meta.mergeMetaTags(resultData.meta);
+            }
+
+
         }
     });
 }

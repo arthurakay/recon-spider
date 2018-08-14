@@ -7,26 +7,6 @@ class MetaTag {
     }
 }
 
-function getMetaTags() {
-    const meta = {};
-
-    const tags = document.getElementsByTagName('meta');
-
-    for (let i = 0; i < tags.length; i++) {
-        const tag = tags[i];
-        const name = tag.name || tag['http-equiv'];
-
-        if (name) {
-            if (!meta[name]) {
-                meta[name] = [];
-            }
-            meta[name].push(tag.content);
-        }
-    }
-
-    return meta;
-}
-
 function mergeMetaTags(newTags) {
     for (let tagName in newTags) {
         if (!META_TAGS.has(tagName)) {
@@ -58,7 +38,6 @@ function serializeMetaTags() {
 }
 
 module.exports = {
-    getMetaTags,
     mergeMetaTags,
     serializeMetaTags
 };
