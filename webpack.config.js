@@ -1,6 +1,8 @@
 const path = require('path'),
     webpack = require('webpack'),
-    HtmlWebpackPlugin = require('html-webpack-plugin');
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    CopyWebpackPlugin = require('copy-webpack-plugin')
+
 
 module.exports = {
     entry: {
@@ -26,6 +28,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'app', 'index.html') }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new CopyWebpackPlugin([ { from: 'static', to: 'static' } ], {})
     ]
 }

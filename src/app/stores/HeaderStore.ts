@@ -1,7 +1,7 @@
 import BaseStore from './base/BaseStore';
 import Header from '../models/Header';
 
-class HeaderStore extends BaseStore<Header> {
+export default class HeaderStore extends BaseStore<Header> {
 
     constructor() {
         super({
@@ -9,5 +9,3 @@ class HeaderStore extends BaseStore<Header> {
         });
     }
 }
-
-export default new HeaderStore();

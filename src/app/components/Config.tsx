@@ -1,21 +1,22 @@
 import * as React from 'react';
-import {makeRequest} from '../Request';
+import {inject, observer} from 'mobx-react';
 
-export default class Hello extends React.Component<{}, {}> {
+interface ConfigProps {
+    crawlerStore?: any
+}
+
+@inject('crawlerStore') @observer
+export default class Config extends React.Component<ConfigProps, {}> {
     public onSubmit = (e: any) => {
         // don't actually submit the form
         e.preventDefault();
 
         const form = e.currentTarget;
 
-        makeRequest({
-            url: '/api/crawl',
-            method: 'POST',
-            data: {
-                domain: form.domain.value,
-                maxDepth: form.maxDepth.value
-            }
-        });
+        this.props.crawlerStore.crawlWebsite(
+            form.domain.value,
+            form.maxDepth.value
+        );
     };
 
     render() {
@@ -26,26 +27,33 @@ export default class Hello extends React.Component<{}, {}> {
                 <p>What site are we crawling today?</p>
 
                 <form onSubmit={this.onSubmit}>
-                    <label htmlFor="domain">Domain:</label>
-                    <input
-                        id="domain"
-                        name="domain"
-                        type="text"
-                        placeholder="https://www.domain.com"
-                    />
+                    <div className="form-group">
+                        <label htmlFor="domain">Domain:</label>
+                        <input
+                            id="domain"
+                            name="domain"
+                            type="text"
+                            className="form-control"
+                            placeholder="https://www.domain.com"
+                        />
 
-                    <label htmlFor="maxDepth">Maximum Depth:</label>
-                    <input
-                        id="maxDepth"
-                        name="maxDepth"
-                        type="number"
-                        defaultValue="2"
-                    />
+                        <label htmlFor="maxDepth">Maximum Depth:</label>
+                        <input
+                            id="maxDepth"
+                            name="maxDepth"
+                            type="number"
+                            defaultValue="2"
+                            className="form-control"
+                        />
 
-                    <input
-                        type="submit"
-                        value="Crawl!"
-                    />
+                        <button
+                            className="btn btn-primary"
+                            type="submit"
+                            disabled={this.props.crawlerStore.loading}
+                        >
+                            Crawl!
+                        </button>
+                    </div>
                 </form>
             </div>
         );

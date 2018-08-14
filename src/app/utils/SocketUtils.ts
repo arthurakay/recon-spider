@@ -1,22 +1,14 @@
-import Header from '../models/Header';
-import MetaTag from '../models/MetaTag';
-
-interface ApiResponse {
-    headers: Array<Header>,
-    metaTags: Array<MetaTag>,
-    url: Array<string>
-}
+import {initStores} from '../stores/_AllStores';
 
 /**
  * Initialize Socket.IO connection
  */
-export function initSocket(): void {
-    const global = (<any>window);
-    global.SOCKET = global.io();
+export function initSocket() {
+    return new Promise((resolve) => {
+        const global = (<any>window);
+        global.SOCKET = global.io();
 
-    global.SOCKET.on('api', (jsonMsg: string) => {
-        const response: ApiResponse = JSON.parse(jsonMsg);
-
-        console.log(response);
+        initStores();
+        resolve();
     });
 }

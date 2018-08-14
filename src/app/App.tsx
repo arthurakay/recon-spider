@@ -1,17 +1,17 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Config from './components/Config';
+import PageWrapper from './components/PageWrapper';
 import {initSocket} from './utils/SocketUtils';
 
 declare let module: any;
 
-initSocket();
+initSocket().then(() => {
+    ReactDOM.render(
+        <PageWrapper />,
+        document.getElementById('root')
+    );
 
-ReactDOM.render(
-    <Config />,
-    document.getElementById('root')
-);
-
-if (module.hot) {
-    module.hot.accept();
-}
+    if (module.hot) {
+        module.hot.accept();
+    }
+});
