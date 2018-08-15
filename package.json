@@ -1,10 +1,10 @@
 {
-  "name": "recon-spider",
+  "name": "spook.js",
   "version": "0.0.1",
   "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/arthurakay/recon-spider"
+    "url": "https://github.com/arthurakay/spook.js"
   },
   "main": "index.js",
   "scripts": {

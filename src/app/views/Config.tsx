@@ -22,7 +22,7 @@ export default class Config extends React.Component<ConfigProps, {}> {
     render() {
         return (
             <div>
-                <h3>recon-spider</h3>
+                <h3>spook.js</h3>
 
                 <p>What site are we crawling today?</p>
 
