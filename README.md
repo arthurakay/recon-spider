@@ -1,5 +1,7 @@
 # spook.js
 
+[![npm package](https://nodei.co/npm/spook.js.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/spook.js/)
+
 *Licensed under the [GPLv3](https://github.com/arthurakay/spook.js/blob/master/LICENSE.md) because of GPL dependencies.*
 
 ## Development
