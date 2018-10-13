@@ -21,6 +21,7 @@ const PageWrapperProvider = () => (
     <Provider
         headerStore={Stores.headerStore}
         crawlerStore={Stores.crawlerStore}
+        sitemapStore={Stores.sitemapStore}
     >
         <PageWrapper />
     </Provider>

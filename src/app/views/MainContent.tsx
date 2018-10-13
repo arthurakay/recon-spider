@@ -1,13 +1,17 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import Loading from '../components/Loading';
-import TabPanel from '../components/TabPanel';
+import Tree from 'rc-tree';
+import 'rc-tree/assets/index.css';
 
 interface MainContentProps {
-    crawlerStore?: any
+    crawlerStore?: any,
+    sitemapStore?: any
 }
 
-@inject('crawlerStore') @observer
+const TreeComponent:any = Tree;
+
+@inject('crawlerStore', 'sitemapStore') @observer
 export default class MainContent extends React.Component<MainContentProps, {}> {
     render() {
         if (this.props.crawlerStore.loading) {
@@ -17,11 +21,16 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
         return (
             <div className="MainContent-view">
                 <Loading loading={this.props.crawlerStore.loading} />
-                <TabPanel tabs={[
-                    {name: 'One', component: <div />},
-                    {name: 'Two', component: <div />},
-                    {name: 'Three', component: <div />}
-                ]} />
+                <TreeComponent
+                    className="myCls"
+                    showLine
+                    selectable={ false }
+                    defaultExpandAll
+                    onExpand={() => {}}
+                    onSelect={() => {}}
+                    onCheck={() => {}}
+                    treeData={this.props.sitemapStore.root}
+                />
             </div>
         );
     }

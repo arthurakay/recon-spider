@@ -4,6 +4,7 @@ const headers = require('../headers');
 const meta = require('../meta');
 const url = require('../url');
 const {getExtractors} = require('../scripts/retire');
+const {parseTree} = require('../scripts/sitemap');
 
 const {sendMsg} = require('../socket');
 
@@ -131,9 +132,14 @@ async function crawl({domain, maxDepth, obey, hostname}) {
     await crawler.close(); // Close the crawler but cache won't be cleared
 
     console.log('Emitting socket response "api"...');
+
+    sendMsg('sitemap', JSON.stringify(
+        parseTree(domain, url.getUrls()))
+    );
+
     sendMsg('api', JSON.stringify({
         headers: headers.serializeHeaders(),
-        url: url.getUrls(),
+        // url: url.getUrls(),
         metaTags: meta.serializeMetaTags()
     }));
 }

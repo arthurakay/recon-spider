@@ -1,5 +1,6 @@
 import CrawlerStore from './CrawlerStore';
 import HeaderStore from './HeaderStore';
+import SiteMapStore from './SiteMapStore';
 
 interface StoresInterface {
     [id: string]: any
@@ -7,7 +8,8 @@ interface StoresInterface {
 
 const stores:StoresInterface = {
     headerStore: HeaderStore,
-    crawlerStore: CrawlerStore
+    crawlerStore: CrawlerStore,
+    sitemapStore: SiteMapStore
 };
 
 const AllStores: StoresInterface = {};
