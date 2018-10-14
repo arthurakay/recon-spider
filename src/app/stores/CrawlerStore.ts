@@ -1,16 +1,8 @@
 import {action, observable} from 'mobx';
 import {makeRequest} from '../Request';
-import Header from '../models/Header';
-import MetaTag from '../models/MetaTag';
-
-interface ApiResponse {
-    headers: Array<Header>,
-    metaTags: Array<MetaTag>,
-    url: Array<string>
-}
 
 export default class CrawlerStore {
-    private socketKey: string = 'api';
+    private socketKey: string = 'crawler';
 
     @observable
     public loading: boolean = false;

@@ -1,11 +1,11 @@
-import BaseStore from './base/BaseStore';
+import BaseArrayStore from './base/BaseArrayStore';
 import Header from '../models/Header';
 
-export default class HeaderStore extends BaseStore<Header> {
-
+export default class HeaderStore extends BaseArrayStore {
     constructor() {
         super({
-            model: Header
+            model: Header,
+            socketKey: 'headers'
         });
     }
 }

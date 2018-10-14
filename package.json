@@ -45,6 +45,7 @@
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.5",
     "rc-tree": "^1.14.7",
+    "react-tabs": "^2.3.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.23.1",
     "ts-loader": "^4.4.2",

@@ -1,36 +1,30 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import Loading from '../components/Loading';
-import Tree from 'rc-tree';
-import 'rc-tree/assets/index.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css'
+import Headers from './Headers';
 
 interface MainContentProps {
-    crawlerStore?: any,
-    sitemapStore?: any
+    crawlerStore?: any
 }
 
-const TreeComponent:any = Tree;
-
-@inject('crawlerStore', 'sitemapStore') @observer
+@inject('crawlerStore') @observer
 export default class MainContent extends React.Component<MainContentProps, {}> {
     render() {
-        if (this.props.crawlerStore.loading) {
-            return (<Loading loading={true} />);
-        }
-
         return (
             <div className="MainContent-view">
                 <Loading loading={this.props.crawlerStore.loading} />
-                <TreeComponent
-                    className="myCls"
-                    showLine
-                    selectable={ false }
-                    defaultExpandAll
-                    onExpand={() => {}}
-                    onSelect={() => {}}
-                    onCheck={() => {}}
-                    treeData={this.props.sitemapStore.root}
-                />
+
+                <Tabs>
+                    <TabList>
+                        <Tab>HTTP Response Headers</Tab>
+                    </TabList>
+
+                    <TabPanel>
+                        <Headers />
+                    </TabPanel>
+                </Tabs>
             </div>
         );
     }

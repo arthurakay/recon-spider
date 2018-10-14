@@ -1,15 +1,17 @@
-import {observable, extendObservable, toJS, action, computed} from 'mobx';
+import {observable, extendObservable, action, computed} from 'mobx';
 import {BaseModel} from '../../models/base/BaseModel';
 
 interface BaseStoreOptions {
     model: BaseModel,
-    [id: string]: any
+    [id: string]: any,
+    socketKey: string
 }
 
 class BaseStore<T extends BaseModel> {
-    @observable _data: any = [];
-    @observable model:BaseModel = null;
+    private socketKey: string = '';
 
+    @observable _data: any = null;
+    @observable model:BaseModel = null;
     @observable loading: boolean = false;
 
     /**
@@ -19,22 +21,29 @@ class BaseStore<T extends BaseModel> {
      */
     constructor(options: BaseStoreOptions) {
         extendObservable(this, options);
+
+        const global = (<any>window);
+
+        global.SOCKET.on(this.socketKey, (jsonMsg: string) => {
+            this.loading = false;
+
+            this.setData(JSON.parse(jsonMsg));
+        });
+
+        global.SOCKET.on('error', (jsonMsg: string) => {
+            this.loading = false;
+
+            // TODO: something...
+            console.error('An error was reported by the socket response.')
+        });
     }
 
     @action
-    setData(items: Array<any> = []): void {
-        this._data.replace(items);
-    }
+    setData(data: any): void {}
 
     @computed
-    get data(): Array<BaseModel> {
-        const data = toJS(this._data);
-
-        if (this.model) {
-            return data.map((item: any) => new (<any>this.model)(item));
-        }
-
-        return data;
+    get data(): any {
+        return true;
     }
 }
 

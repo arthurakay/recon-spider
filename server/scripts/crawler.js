@@ -131,17 +131,19 @@ async function crawl({domain, maxDepth, obey, hostname}) {
     await crawler.onIdle();
     await crawler.close(); // Close the crawler but cache won't be cleared
 
-    console.log('Emitting socket response "api"...');
-
     sendMsg('sitemap', JSON.stringify(
-        parseTree(domain, url.getUrls()))
-    );
+        parseTree(domain, url.getUrls())
+    ));
 
-    sendMsg('api', JSON.stringify({
-        headers: headers.serializeHeaders(),
-        // url: url.getUrls(),
-        metaTags: meta.serializeMetaTags()
-    }));
+    sendMsg('headers', JSON.stringify(
+        headers.serializeHeaders()
+    ));
+
+    sendMsg('metaTags', JSON.stringify(
+        meta.serializeMetaTags()
+    ));
+
+    sendMsg('crawler', 'CRAWL COMPLETE');
 }
 
 module.exports = {

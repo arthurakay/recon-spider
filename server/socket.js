@@ -20,6 +20,7 @@ function init(httpServer) {
  * @param msg
  */
 function sendMsg(eventName, msg) {
+    console.log(`Emitting socket response for "${eventName}"`);
     ioServer.emit(eventName, msg);
 }
 
