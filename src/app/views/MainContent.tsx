@@ -3,7 +3,8 @@ import {inject, observer} from 'mobx-react';
 import Loading from '../components/Loading';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css'
-import Headers from './Headers';
+import Headers from '../components/Headers';
+import MetaTags from '../components/MetaTags';
 
 interface MainContentProps {
     crawlerStore?: any
@@ -18,11 +19,15 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
 
                 <Tabs>
                     <TabList>
-                        <Tab>HTTP Response Headers</Tab>
+                        <Tab>HTTP Headers</Tab>
+                        <Tab>Meta Tags</Tab>
                     </TabList>
 
                     <TabPanel>
                         <Headers />
+                    </TabPanel>
+                    <TabPanel>
+                        <MetaTags />
                     </TabPanel>
                 </Tabs>
             </div>

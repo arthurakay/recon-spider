@@ -1,16 +1,11 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
-import Tree from 'rc-tree';
-import 'rc-tree/assets/index.css';
 
 interface ConfigProps {
-    crawlerStore?: any,
-    sitemapStore?: any
+    crawlerStore?: any
 }
 
-const TreeComponent:any = Tree;
-
-@inject('crawlerStore', 'sitemapStore') @observer
+@inject('crawlerStore') @observer
 export default class Config extends React.Component<ConfigProps, {}> {
     public onSubmit = (e: any) => {
         // don't actually submit the form
@@ -62,17 +57,6 @@ export default class Config extends React.Component<ConfigProps, {}> {
                         </button>
                     </div>
                 </form>
-
-                <TreeComponent
-                    className="myCls"
-                    showLine
-                    selectable={ false }
-                    defaultExpandAll
-                    onExpand={() => {}}
-                    onSelect={() => {}}
-                    onCheck={() => {}}
-                    treeData={this.props.sitemapStore.data}
-                />
             </div>
         );
     }

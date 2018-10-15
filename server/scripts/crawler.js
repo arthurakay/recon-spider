@@ -44,22 +44,39 @@ function launch() {
                 return retireJs;
             }
 
+            function assembleMetaInfo(values, tags) {
+                for (let i = 0; i < tags.length; i++) {
+                    const tag = tags[i];
+                    let name = tag.name || tag['http-equiv'];
+
+                    if (name) {
+                        if (!values[name]) {
+                            values[name] = [];
+                        }
+                        values[name].push(tag.content);
+                    } else if (tag.attributes.charset) {
+                        name = 'charset';
+
+                        if (!values[name]) {
+                            values[name] = [];
+                        }
+                        values[name].push(tag.attributes.charset.value);
+                    }
+                }
+
+                return values;
+            }
+
             function getMetaTags() {
                 const meta = {};
 
-                const tags = document.getElementsByTagName('meta');
+                // look in the HTML <head> first
+                let tags = document.head.querySelectorAll('meta');
+                assembleMetaInfo(meta, tags);
 
-                for (let i = 0; i < tags.length; i++) {
-                    const tag = tags[i];
-                    const name = tag.name || tag['http-equiv'];
-
-                    if (name) {
-                        if (!meta[name]) {
-                            meta[name] = [];
-                        }
-                        meta[name].push(tag.content);
-                    }
-                }
+                // then look in the HTML <body>
+                tags = document.querySelectorAll('meta');
+                assembleMetaInfo(meta, tags);
 
                 return meta;
             }
@@ -72,7 +89,7 @@ function launch() {
                 returnData = {
                     js: detectJS(),
                     vulnerabilities: null,
-                    metaTags: getMetaTags()
+                    metaTags: getMetaTags() // TODO: why isn't this working?
                 };
             } catch (e) {
                 error = true;
