@@ -89,7 +89,7 @@ function launch() {
                 returnData = {
                     js: detectJS(),
                     vulnerabilities: null,
-                    metaTags: getMetaTags() // TODO: why isn't this working?
+                    metaTags: getMetaTags()
                 };
             } catch (e) {
                 error = true;
@@ -117,7 +117,7 @@ function launch() {
             const resultData = result.result;
 
             if (!resultData.error) {
-                meta.mergeMetaTags(resultData.meta);
+                meta.mergeMetaTags(resultData.data.metaTags);
             }
 
 
