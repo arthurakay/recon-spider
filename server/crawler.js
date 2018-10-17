@@ -5,6 +5,7 @@ const meta = require('./scripts/meta');
 const url = require('./url');
 const {getExtractors, mergeJS, serializeJs} = require('./scripts/retire');
 const {parseTree} = require('./scripts/sitemap');
+const {nslookup} = require('./scripts/nslookup');
 
 const {sendMsg} = require('./socket');
 
@@ -145,6 +146,14 @@ function launch() {
  * @return {Promise<void>}
  */
 async function crawl({domain, maxDepth, obey, hostname}) {
+    nslookup(hostname, (error, stdOut, stdErr) => {
+        if (error) {
+            sendMsg('nslookup', JSON.stringify({ data: 'An error occurred.'}));
+        } else {
+            sendMsg('nslookup', JSON.stringify({ data: stdOut }));
+        }
+    });
+
     // Launch the crawler with persisting cache
     const crawler = await launch();
 

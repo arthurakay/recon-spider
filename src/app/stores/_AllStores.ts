@@ -2,6 +2,7 @@ import CrawlerStore from './CrawlerStore';
 import HeaderStore from './HeaderStore';
 import SiteMapStore from './SiteMapStore';
 import MetaTagsStore from './MetaTagStore';
+import NsLookupStore from './NsLookupStore';
 import RetireJsStore from './RetireJsStore';
 
 interface StoresInterface {
@@ -12,6 +13,7 @@ const stores:StoresInterface = {
     crawlerStore: CrawlerStore,
     headerStore: HeaderStore,
     metaTagsStore: MetaTagsStore,
+    nsLookupStore: NsLookupStore,
     retireJsStore: RetireJsStore,
     sitemapStore: SiteMapStore
 };

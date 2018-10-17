@@ -22,6 +22,7 @@ const PageWrapperProvider = () => (
         crawlerStore={Stores.crawlerStore}
         headerStore={Stores.headerStore}
         metaTagsStore={Stores.metaTagsStore}
+        nsLookupStore={Stores.nsLookupStore}
         retireJsStore={Stores.retireJsStore}
         sitemapStore={Stores.sitemapStore}
     >

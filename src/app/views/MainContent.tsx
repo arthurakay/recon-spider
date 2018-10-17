@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css'
 import Headers from '../components/Headers';
 import MetaTags from '../components/MetaTags';
+import NsLookup from '../components/NsLookup';
 import RetireJs from '../components/RetireJs';
 
 interface MainContentProps {
@@ -20,11 +21,15 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
 
                 <Tabs>
                     <TabList>
+                        <Tab>NsLookup</Tab>
                         <Tab>HTTP Headers</Tab>
                         <Tab>Meta Tags</Tab>
                         <Tab>JS Libraries</Tab>
                     </TabList>
 
+                    <TabPanel>
+                        <NsLookup />
+                    </TabPanel>
                     <TabPanel>
                         <Headers />
                     </TabPanel>

@@ -8,7 +8,6 @@ export default class BaseArrayStore extends BaseStore<BaseModel> {
     @action
     setData(items: Array<any> = []): void {
         this._data.replace(items);
-        console.log(items)
     }
 
     @computed
