@@ -4,8 +4,8 @@ const retireJs = require('retire');
 const URI = require('urijs');
 const request = require('request');
 
-const headers = require('./server/headers');
-const meta = require('./server/meta');
+const headers = require('./server/scripts/headers');
+const meta = require('./server/scripts/meta');
 const url = require('./server/url');
 
 /*

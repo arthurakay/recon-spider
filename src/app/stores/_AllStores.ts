@@ -2,6 +2,7 @@ import CrawlerStore from './CrawlerStore';
 import HeaderStore from './HeaderStore';
 import SiteMapStore from './SiteMapStore';
 import MetaTagsStore from './MetaTagStore';
+import RetireJsStore from './RetireJsStore';
 
 interface StoresInterface {
     [id: string]: any
@@ -11,6 +12,7 @@ const stores:StoresInterface = {
     crawlerStore: CrawlerStore,
     headerStore: HeaderStore,
     metaTagsStore: MetaTagsStore,
+    retireJsStore: RetireJsStore,
     sitemapStore: SiteMapStore
 };
 

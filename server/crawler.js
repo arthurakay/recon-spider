@@ -1,12 +1,12 @@
 const HCCrawler = require('headless-chrome-crawler');
 
-const headers = require('../headers');
-const meta = require('../meta');
-const url = require('../url');
-const {getExtractors} = require('../scripts/retire');
-const {parseTree} = require('../scripts/sitemap');
+const headers = require('./scripts/headers');
+const meta = require('./scripts/meta');
+const url = require('./url');
+const {getExtractors, mergeJS, serializeJs} = require('./scripts/retire');
+const {parseTree} = require('./scripts/sitemap');
 
-const {sendMsg} = require('../socket');
+const {sendMsg} = require('./socket');
 
 /*
  * Run the program
@@ -37,7 +37,9 @@ function launch() {
                             }
                         }
 
-                        retireJs[component] = results;
+                        if (results.length > 0) {
+                            retireJs[component] = results;
+                        }
                     }
                 }
 
@@ -87,7 +89,7 @@ function launch() {
 
             try {
                 returnData = {
-                    js: detectJS(),
+                    retireJs: detectJS(),
                     vulnerabilities: null,
                     metaTags: getMetaTags()
                 };
@@ -109,6 +111,16 @@ function launch() {
 
         /**
          * Do some stuff after evaluatePage() returns (in Node.js context)
+         * @param {object} result The data returned by evaluatePage()
+         *
+         *      {
+         *          error: {boolean}
+         *          data: {
+         *              retireJs: {},
+         *              vulnerabilities: null,
+         *              metaTags: {}
+         *          }
+         *      }
          */
         onSuccess: result => {
             url.addUrl(result.options.url);
@@ -118,9 +130,8 @@ function launch() {
 
             if (!resultData.error) {
                 meta.mergeMetaTags(resultData.data.metaTags);
+                mergeJS((resultData.data.retireJs));
             }
-
-
         }
     });
 }
@@ -158,6 +169,10 @@ async function crawl({domain, maxDepth, obey, hostname}) {
 
     sendMsg('metaTags', JSON.stringify(
         meta.serializeMetaTags()
+    ));
+
+    sendMsg('retireJs', JSON.stringify(
+        serializeJs()
     ));
 
     sendMsg('crawler', 'CRAWL COMPLETE');

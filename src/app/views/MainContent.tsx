@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css'
 import Headers from '../components/Headers';
 import MetaTags from '../components/MetaTags';
+import RetireJs from '../components/RetireJs';
 
 interface MainContentProps {
     crawlerStore?: any
@@ -21,6 +22,7 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                     <TabList>
                         <Tab>HTTP Headers</Tab>
                         <Tab>Meta Tags</Tab>
+                        <Tab>JS Libraries</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -28,6 +30,9 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                     </TabPanel>
                     <TabPanel>
                         <MetaTags />
+                    </TabPanel>
+                    <TabPanel>
+                        <RetireJs />
                     </TabPanel>
                 </Tabs>
             </div>

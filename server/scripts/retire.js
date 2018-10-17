@@ -1,5 +1,56 @@
 const request = require('request');
 
+class JsLib {
+    constructor({name = '', values = []}) {
+        this.name = name;
+        this.values = values;
+    }
+}
+
+
+const JS = new Map();
+
+/**
+ * Add new parameters to our Map
+ * @param newJS {Object}
+ */
+function mergeJS(newJS) {
+    for (let jsLib in newJS) {
+        const results = newJS[jsLib];
+
+        if (results.length > 0) {
+            if (!JS.has(jsLib)) {
+                JS.set(jsLib, new Set());
+            }
+
+            let jsSet = JS.get(jsLib);
+
+            for (let i=0; i<results.length; i++) {
+                jsSet.add(results[i]);
+            }
+        }
+    }
+}
+
+/**
+ * Convert the Map() of headers into an array for client consumption
+ * @return {Array}
+ */
+function serializeJs() {
+    const results = [];
+
+    JS.forEach((valueSet, name) => {
+        results.push(
+            new JsLib({
+                name,
+                values: Array.from(valueSet)
+            })
+        )
+    });
+
+    return results;
+}
+
 /*
  * RetireJS shim (from https://github.com/RetireJS/retire.js/blob/master/chrome/js/background.js)
  */
@@ -65,5 +116,7 @@ function getRetireJS() {
 module.exports = {
     downloadRetireJS,
     getRetireJS,
-    getExtractors
+    getExtractors,
+    mergeJS,
+    serializeJs
 };

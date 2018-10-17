@@ -2,7 +2,7 @@ const path = require('path'),
     express = require('express'),
     URI = require('urijs');
 
-const {crawl} = require('../scripts/crawler');
+const {crawl} = require('../crawler');
 
 const router = express.Router(),
     root = path.resolve(__dirname, '..', '..');
