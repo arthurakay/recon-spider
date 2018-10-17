@@ -1,23 +1,40 @@
 import {action, computed, observable, toJS} from 'mobx';
 import BaseStore from '../base/BaseStore';
-import {BaseModel} from '../../models/base/BaseModel';
+import ArrayItem from '../../models/base/ArrayItem';
 
-export default class BaseArrayStore extends BaseStore<BaseModel> {
+export default class BaseArrayStore extends BaseStore<ArrayItem> {
     @observable _data: any = [];
+    @observable filterByPageKey: string = null;
 
     @action
     setData(items: Array<any> = []): void {
         this._data.replace(items);
+        console.log(items)
     }
 
     @computed
-    get data(): Array<BaseModel> {
+    get data(): Array<ArrayItem> {
         const data = toJS(this._data);
 
-        if (this.model) {
-            return data.map((item: any) => new (<any>this.model)(item));
+        let filteredData;
+        if (this.filterByPageKey !== null) {
+            filteredData = data.filter((item: any) => {
+                return item.pages.includes(this.filterByPageKey);
+            });
+        } else {
+            filteredData = data;
         }
 
-        return data;
+        return filteredData.map((item: any) => new (<any>this.model)(item));
+    }
+
+    @action
+    filterDataByPage(key: string): void {
+        this.filterByPageKey= key;
+    }
+
+    @action
+    clearFilterByPage(): void {
+        this.filterByPageKey = null;
     }
 }

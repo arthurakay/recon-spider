@@ -6,8 +6,8 @@ function addUrl(url) {
         return false;
     }
 
-    URL.add(url);
     console.log(`Requested ${url}`);
+    URL.add(url);
 }
 
 function getUrls() {

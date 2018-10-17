@@ -1,13 +1,16 @@
 const HCCrawler = require('headless-chrome-crawler');
 
-const headers = require('./scripts/headers');
-const meta = require('./scripts/meta');
-const url = require('./url');
-const {getExtractors, mergeJS, serializeJs} = require('./scripts/retire');
+const URL = require('./url');
+const {getExtractors} = require('./scripts/retire');
 const {parseTree} = require('./scripts/sitemap');
 const {nslookup} = require('./scripts/nslookup');
 
 const {sendMsg} = require('./socket');
+const {ArrayItemCache} = require('./models/ArrayItemCache');
+
+const META_TAGS = new ArrayItemCache();
+const HEADERS = new ArrayItemCache();
+const RETIRE_JS = new ArrayItemCache();
 
 /*
  * Run the program
@@ -38,6 +41,7 @@ function launch() {
                             }
                         }
 
+                        // only report JS libs that are identified
                         if (results.length > 0) {
                             retireJs[component] = results;
                         }
@@ -67,6 +71,11 @@ function launch() {
                     }
                 }
 
+                /**
+                 * {
+                 *     'metaTagName': [...values...]
+                 * }
+                 */
                 return values;
             }
 
@@ -124,14 +133,15 @@ function launch() {
          *      }
          */
         onSuccess: result => {
-            url.addUrl(result.options.url);
-            headers.mergeHeaders(result.response.headers);
+            const url = result.options.url;
+            URL.addUrl(url);
+            HEADERS.merge(result.response.headers, url);
 
             const resultData = result.result;
 
             if (!resultData.error) {
-                meta.mergeMetaTags(resultData.data.metaTags);
-                mergeJS((resultData.data.retireJs));
+                META_TAGS.merge(resultData.data.metaTags, url);
+                RETIRE_JS.merge(resultData.data.retireJs, url);
             }
         }
     });
@@ -169,19 +179,19 @@ async function crawl({domain, maxDepth, obey, hostname}) {
     await crawler.close(); // Close the crawler but cache won't be cleared
 
     sendMsg('sitemap', JSON.stringify(
-        parseTree(domain, url.getUrls())
+        parseTree(domain, URL.getUrls())
     ));
 
     sendMsg('headers', JSON.stringify(
-        headers.serializeHeaders()
+        HEADERS.serialize()
     ));
 
     sendMsg('metaTags', JSON.stringify(
-        meta.serializeMetaTags()
+        META_TAGS.serialize()
     ));
 
     sendMsg('retireJs', JSON.stringify(
-        serializeJs()
+        RETIRE_JS.serialize()
     ));
 
     sendMsg('crawler', 'CRAWL COMPLETE');

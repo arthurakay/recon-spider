@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
+import ValueItem from '../models/base/ValueItem';
 
 interface HeadersProps {
     headerStore?: any
@@ -17,7 +18,9 @@ export default class Headers extends React.Component<HeadersProps, {}> {
             const values:any = [];
 
             for (let j=0; j<row.values.length; j++) {
-                values.push(<li>{row.values[j]}</li>);
+                let valueItem: ValueItem = row.values[j];
+
+                values.push(<li>{valueItem.name}</li>);
             }
 
             rows.push(

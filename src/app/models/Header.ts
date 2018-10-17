@@ -1,6 +1,3 @@
-import {BaseModel} from './base/BaseModel';
+import ArrayItem from './base/ArrayItem';
 
-export default class Header extends BaseModel {
-    public name: string;
-    public values: Array<string>
-}
+export default class Header extends ArrayItem {}
