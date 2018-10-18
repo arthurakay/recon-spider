@@ -1,4 +1,4 @@
-import {initStores} from '../stores/_AllStores';
+import {constructStores} from '../stores/_AllStores';
 
 /**
  * Initialize Socket.IO connection
@@ -8,7 +8,7 @@ export function initSocket() {
         const global = (<any>window);
         global.SOCKET = global.io();
 
-        initStores();
+        constructStores();
         resolve();
     });
 }

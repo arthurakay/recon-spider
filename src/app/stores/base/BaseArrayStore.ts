@@ -1,6 +1,7 @@
 import {action, computed, observable, toJS} from 'mobx';
 import BaseStore from '../base/BaseStore';
 import ArrayItem from '../../models/base/ArrayItem';
+import ValueItem from '../../models/base/ValueItem';
 
 export default class BaseArrayStore extends BaseStore<ArrayItem> {
     @observable _data: any = [];
@@ -9,32 +10,51 @@ export default class BaseArrayStore extends BaseStore<ArrayItem> {
     @action
     setData(items: Array<any> = []): void {
         this._data.replace(items);
-        console.log(items)
     }
 
     @computed
     get data(): Array<ArrayItem> {
-        const data = toJS(this._data);
+        const rawData = toJS(this._data),
+            data = rawData.map((item: any) => new ArrayItem(item));
 
-        let filteredData;
         if (this.filterByPageKey !== null) {
-            filteredData = data.filter((item: any) => {
-                return item.pages.includes(this.filterByPageKey);
-            });
-        } else {
-            filteredData = data;
+            const filteredData = [];
+
+            for (let i=0; i<data.length; i++) {
+                const arrayItem = data[i];
+
+                const filteredArrayItem = new ArrayItem({
+                    name: arrayItem.name
+                });
+
+                // loop over all values to see if they exist on the selected URL
+                for (let j=0; j<arrayItem.values.length; j++) {
+                    const valueItem: ValueItem = arrayItem.values[j];
+
+                    if (valueItem.hasPage(this.filterByPageKey)) {
+
+                        filteredArrayItem.values.push(
+                            new ValueItem({
+                                name: valueItem.name,
+                                pages: [this.filterByPageKey]
+                            })
+                        );
+                    }
+                }
+
+                if (filteredArrayItem.values.length > 0) {
+                    filteredData.push(filteredArrayItem);
+                }
+            }
+
+            return filteredData;
         }
 
-        return filteredData.map((item: any) => new (<any>this.model)(item));
+        return data;
     }
 
     @action
-    filterDataByPage(key: string): void {
-        this.filterByPageKey= key;
-    }
-
-    @action
-    clearFilterByPage(): void {
-        this.filterByPageKey = null;
+    filterDataByUrl(key?: string): void {
+        this.filterByPageKey = key || null;
     }
 }

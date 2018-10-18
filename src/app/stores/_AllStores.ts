@@ -22,8 +22,14 @@ const AllStores: StoresInterface = {};
 
 export default AllStores;
 
-export function initStores() {
+export function constructStores() {
     for (let store in stores) {
-        AllStores[store] = new stores[store]()
+        AllStores[store] = new stores[store]();
+    }
+}
+
+export function initStores() {
+    for (let store in AllStores) {
+        AllStores[store].initialize && AllStores[store].initialize();
     }
 }

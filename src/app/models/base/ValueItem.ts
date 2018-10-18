@@ -11,4 +11,8 @@ export default class ValueItem {
         this.name = config.name;
         this.pages = config.pages;
     }
+
+    hasPage(url: string) {
+        return this.pages.indexOf(url) >= 0;
+    }
 }

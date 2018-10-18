@@ -21,11 +21,11 @@ const TreeComponent:any = RCTree;
 export default class Sitemap extends React.Component<TreeProps, {}> {
     onSelect = (selectedKeys: Array<string>, info: NodeSelectedEvent) => {
         if (selectedKeys.length === 0) {
-            // de-selected
+            this.props.sitemapStore.setFilter();
             return;
+        } else {
+            this.props.sitemapStore.setFilter(selectedKeys[0]);
         }
-
-        console.log(selectedKeys, info);
     }
 
     render() {

@@ -1,10 +1,11 @@
-import {observable, extendObservable, action, computed} from 'mobx';
+import {observable, action, computed} from 'mobx';
 import {BaseModel} from '../../models/base/BaseModel';
+import {assign} from 'lodash';
 
 interface BaseStoreOptions {
     model: BaseModel,
     [id: string]: any,
-    socketKey: string
+    socketKey?: string
 }
 
 class BaseStore<T extends BaseModel> {
@@ -20,23 +21,30 @@ class BaseStore<T extends BaseModel> {
      * @param additionalObservables.endpoints {Object}
      */
     constructor(options: BaseStoreOptions) {
-        extendObservable(this, options);
+        assign(this, options);
 
-        const global = (<any>window);
+        if (options.socketKey) {
+            const global = (<any>window);
 
-        global.SOCKET.on(this.socketKey, (jsonMsg: string) => {
-            this.loading = false;
+            global.SOCKET.on(this.socketKey, (jsonMsg: string) => {
+                this.loading = false;
 
-            this.setData(JSON.parse(jsonMsg));
-        });
+                this.setData(JSON.parse(jsonMsg));
+            });
 
-        global.SOCKET.on('error', (jsonMsg: string) => {
-            this.loading = false;
+            global.SOCKET.on('error', (jsonMsg: string) => {
+                this.loading = false;
 
-            // TODO: something...
-            console.error('An error was reported by the socket response.')
-        });
+                // TODO: something...
+                console.error('An error was reported by the socket response.')
+            });
+        }
     }
+
+    /**
+     * Abstract method
+     */
+    initialize(): void {}
 
     @action
     setData(data: any): void {}

@@ -3,7 +3,9 @@ import ValueItem from './ValueItem';
 
 interface ArrayItemConfig {
     name: string;
-    values: Array<any>;
+    values?: {
+        [id:string]: Array<string>
+    };
 }
 
 export default class ArrayItem extends BaseModel {
