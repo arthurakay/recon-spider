@@ -11,15 +11,15 @@ export default class HeaderStore extends BaseArrayStore {
         });
     }
 
-    // /**
-    //  * override
-    //  */
-    // initialize() {
-    //     reaction(
-    //         () => AllStores.sitemapStore.filterByUrl,
-    //         action((url: string) => {
-    //             this.filterDataByUrl(url);
-    //         })
-    //     );
-    // }
+    /**
+     * override
+     */
+    initialize() {
+        reaction(
+            () => AllStores.sitemapStore.filterByUrl,
+            action((url: string) => {
+                this.filterDataByUrl(url);
+            })
+        );
+    }
 }
