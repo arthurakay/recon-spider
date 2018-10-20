@@ -1,16 +1,13 @@
 const HCCrawler = require('headless-chrome-crawler');
 
-const URL = require('./url');
-const {getExtractors} = require('./scripts/retire');
-const {parseTree} = require('./scripts/sitemap');
-const {nslookup} = require('./scripts/nslookup');
+const RETIRE_JS = require('./scripts/retire');
+const NSLOOKUP = require('./scripts/nslookup');
+const WAPPALYZER = require('./scripts/wappalyzer');
+const HEADERS = require('./scripts/headers');
+const META_TAGS = require('./scripts/metatags');
+const SITEMAP = require('./scripts/sitemap');
 
 const {sendMsg} = require('./socket');
-const {ArrayItemCache} = require('./models/ArrayItemCache');
-
-const META_TAGS = new ArrayItemCache();
-const HEADERS = new ArrayItemCache();
-const RETIRE_JS = new ArrayItemCache();
 
 /*
  * Run the program
@@ -117,7 +114,7 @@ function launch() {
          * Expose a function to the window object; runs in the context of Node.js
          */
         exposedFunctionName: '__exposedFunction',
-        exposeFunction: () => getExtractors(),
+        exposeFunction: () => RETIRE_JS.getExtractors(),
 
         /**
          * Do some stuff after evaluatePage() returns (in Node.js context)
@@ -134,14 +131,14 @@ function launch() {
          */
         onSuccess: result => {
             const url = result.options.url;
-            URL.addUrl(url);
-            HEADERS.merge(result.response.headers, url);
+            SITEMAP.addUrl(url);
+            HEADERS.addHeaders(result.response.headers, url);
 
             const resultData = result.result;
 
             if (!resultData.error) {
-                META_TAGS.merge(resultData.data.metaTags, url);
-                RETIRE_JS.merge(resultData.data.retireJs, url);
+                META_TAGS.addTags(resultData.data.metaTags, url);
+                RETIRE_JS.addJs(resultData.data.retireJs, url);
             }
         }
     });
@@ -156,13 +153,12 @@ function launch() {
  * @return {Promise<void>}
  */
 async function crawl({domain, maxDepth, obey, hostname}) {
-    nslookup(hostname, (error, stdOut, stdErr) => {
-        if (error) {
-            sendMsg('nslookup', JSON.stringify({ data: 'An error occurred.'}));
-        } else {
-            sendMsg('nslookup', JSON.stringify({ data: stdOut }));
-        }
-    });
+    NSLOOKUP.init(hostname);
+    WAPPALYZER.init(domain, maxDepth);
+    HEADERS.init();
+    META_TAGS.init();
+    RETIRE_JS.init();
+    SITEMAP.init(domain);
 
     // Launch the crawler with persisting cache
     const crawler = await launch();
@@ -177,22 +173,6 @@ async function crawl({domain, maxDepth, obey, hostname}) {
 
     await crawler.onIdle();
     await crawler.close(); // Close the crawler but cache won't be cleared
-
-    sendMsg('sitemap', JSON.stringify(
-        parseTree(domain, URL.getUrls())
-    ));
-
-    sendMsg('headers', JSON.stringify(
-        HEADERS.serialize()
-    ));
-
-    sendMsg('metaTags', JSON.stringify(
-        META_TAGS.serialize()
-    ));
-
-    sendMsg('retireJs', JSON.stringify(
-        RETIRE_JS.serialize()
-    ));
 
     sendMsg('crawler', 'CRAWL COMPLETE');
 }

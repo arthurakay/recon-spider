@@ -1,4 +1,27 @@
 const request = require('request');
+const {sendMsg, getServer} = require('../socket');
+const {ArrayItemCache} = require('../models/ArrayItemCache');
+
+const RETIRE_JS = new ArrayItemCache();
+
+function addJs(js, url) {
+    RETIRE_JS.merge(js, url);
+
+    sendMsg('retireJs', JSON.stringify(
+        RETIRE_JS.serialize()
+    ));
+}
+
+/**
+ *
+ */
+function init() {
+    const ioServer = getServer();
+
+    ioServer.on('connection', () => {
+        sendMsg('retireJs', JSON.stringify(RETIRE_JS.serialize()));
+    });
+}
 
 /*
  * RetireJS shim (from https://github.com/RetireJS/retire.js/blob/master/chrome/js/background.js)
@@ -65,5 +88,7 @@ function getRetireJS() {
 module.exports = {
     downloadRetireJS,
     getRetireJS,
-    getExtractors
+    getExtractors,
+    addJs,
+    init
 };

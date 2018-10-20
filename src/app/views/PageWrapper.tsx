@@ -25,6 +25,7 @@ const PageWrapperProvider = () => (
         nsLookupStore={Stores.nsLookupStore}
         retireJsStore={Stores.retireJsStore}
         sitemapStore={Stores.sitemapStore}
+        wappalyzerStore={Stores.wappalyzerStore}
     >
         <PageWrapper />
     </Provider>

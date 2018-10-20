@@ -9,7 +9,7 @@ let ioServer;
 function init(httpServer) {
     ioServer = io(httpServer);
 
-    ioServer.on('connection', function(socket){
+    ioServer.on('connection', function(){
         console.log('a user connected');
     });
 }
@@ -19,12 +19,17 @@ function init(httpServer) {
  * @param eventName
  * @param msg
  */
-function sendMsg(eventName, msg) {
+function sendMsg(eventName, msg = '') {
     console.log(`Emitting socket response for "${eventName}"`);
     ioServer.emit(eventName, msg);
 }
 
+function getServer() {
+    return ioServer;
+}
+
 module.exports = {
     sendMsg,
-    init
+    init,
+    getServer
 };

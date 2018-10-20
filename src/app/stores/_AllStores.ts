@@ -4,6 +4,7 @@ import SiteMapStore from './SiteMapStore';
 import MetaTagsStore from './MetaTagStore';
 import NsLookupStore from './NsLookupStore';
 import RetireJsStore from './RetireJsStore';
+import WappalyzerStore from './WappalyzerStore';
 
 interface StoresInterface {
     [id: string]: any
@@ -15,7 +16,8 @@ const stores:StoresInterface = {
     metaTagsStore: MetaTagsStore,
     nsLookupStore: NsLookupStore,
     retireJsStore: RetireJsStore,
-    sitemapStore: SiteMapStore
+    sitemapStore: SiteMapStore,
+    wappalyzerStore: WappalyzerStore
 };
 
 const AllStores: StoresInterface = {};

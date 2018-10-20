@@ -7,6 +7,7 @@ import Headers from '../components/Headers';
 import MetaTags from '../components/MetaTags';
 import NsLookup from '../components/NsLookup';
 import RetireJs from '../components/RetireJs';
+import Wappalyzer from '../components/Wappalyzer';
 
 interface MainContentProps {
     crawlerStore?: any
@@ -24,7 +25,8 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                         <Tab>NsLookup</Tab>
                         <Tab>HTTP Headers</Tab>
                         <Tab>Meta Tags</Tab>
-                        <Tab>JS Libraries</Tab>
+                        <Tab>RetireJS</Tab>
+                        <Tab>Wappalyzer</Tab>
                     </TabList>
 
                     <TabPanel>
@@ -38,6 +40,9 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                     </TabPanel>
                     <TabPanel>
                         <RetireJs />
+                    </TabPanel>
+                    <TabPanel>
+                        <Wappalyzer />
                     </TabPanel>
                 </Tabs>
             </div>

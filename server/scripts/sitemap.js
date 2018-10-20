@@ -1,3 +1,8 @@
+const URL = require('../url');
+const {sendMsg, getServer} = require('../socket');
+
+let DOMAIN = '';
+
 class TreeNode {
     constructor(options) {
         this.key = options.key;
@@ -75,6 +80,27 @@ function parseTree(domain = '', urlPaths = []) {
     return root;
 }
 
+function init(domain) {
+    const ioServer = getServer();
+    DOMAIN = domain;
+
+    ioServer.on('connection', () => {
+        sendMsg('sitemap', JSON.stringify(
+            parseTree(DOMAIN, URL.getUrls())
+        ));
+    });
+}
+
+function addUrl(url) {
+    URL.addUrl(url);
+
+    sendMsg('sitemap', JSON.stringify(
+        parseTree(DOMAIN, URL.getUrls())
+    ));
+}
+
 module.exports = {
-    parseTree
+    parseTree,
+    init,
+    addUrl
 };
