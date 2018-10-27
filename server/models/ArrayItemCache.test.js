@@ -1,16 +1,16 @@
 const {ArrayItemCache} = require('./ArrayItemCache');
 
 const js = {
-    "jquery": ["3.3.1"]
+    "jquery": [{name: "3.3.1", info: []}]
 };
 
 const headers = {
-    'Connection': 'keep-alive',
-    'Content-Length': '0',
-    'Content-Type': 'text/html; charset=utf-8',
-    'Date': 'Wed, 17 Oct 2018 14:07:21 GMT',
-    'ETag': 'W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"',
-    'X-Powered-By': 'Express'
+    'Connection': [{name:'keep-alive', info:[]}],
+    'Content-Length': [{name:'0', info:[]}],
+    'Content-Type': [{name:'text/html; charset=utf-8', info:[]}],
+    'Date': [{name:'Wed, 17 Oct 2018 14:07:21 GMT', info:[]}],
+    'ETag': [{name:'W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"', info:[]}],
+    'X-Powered-By': [{name:'Express', info:[]}]
 };
 
 test('ArrayItemCache > merge() and serialize()', () => {
@@ -25,37 +25,55 @@ test('ArrayItemCache > merge() and serialize()', () => {
         {
             name: 'Connection',
             values: {
-                'keep-alive': ['foo.html']
+                'keep-alive': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         },
         {
             name: 'Content-Length',
             values: {
-                '0': ['foo.html']
+                '0': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         },
         {
             name: 'Content-Type',
             values: {
-                'text/html; charset=utf-8': ['foo.html']
+                'text/html; charset=utf-8': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         },
         {
             name: 'Date',
             values: {
-                'Wed, 17 Oct 2018 14:07:21 GMT': ['foo.html']
+                'Wed, 17 Oct 2018 14:07:21 GMT': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         },
         {
             name: 'ETag',
             values: {
-                'W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"': ['foo.html']
+                'W/"0-2jmj7l5rSw0yVb/vlWAYkK/YBwk"': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         },
         {
             name: 'X-Powered-By',
             values: {
-                'Express': ['foo.html']
+                'Express': {
+                    pages: ['foo.html'],
+                    info: []
+                }
             }
         }
     ];
@@ -75,7 +93,10 @@ test('ArrayItemCache > multiple pages', () => {
     const updatedOutput = [{
         name: 'jquery',
         values: {
-            '3.3.1': ['foo.html', 'bar.html']
+            '3.3.1': {
+                pages: ['foo.html', 'bar.html'],
+                info: []
+            }
         }
     }];
     const updatedData = CACHE.serialize();

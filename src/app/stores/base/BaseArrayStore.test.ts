@@ -1,10 +1,15 @@
 import BaseArrayStore from './BaseArrayStore';
 import ArrayItem from '../../models/base/ArrayItem';
 
+const emptyArray: Array<any> = [];
+
 const data = [{
     name: "charset",
     values: {
-        'utf-8': ['foo.html', 'bar.html']
+        'utf-8': {
+            pages: ['foo.html', 'bar.html'],
+            info: emptyArray
+        }
     }
 }];
 
@@ -22,7 +27,8 @@ test('BaseArrayStore > setData()', () => {
         name: "charset",
         values: [{
             name: 'utf-8',
-            pages: ['foo.html', 'bar.html']
+            pages: ['foo.html', 'bar.html'],
+            info: emptyArray
         }]
     }];
 
@@ -44,7 +50,8 @@ test('BaseArrayStore > filterDataByUrl()', () => {
         name: "charset",
         values: [{
             name: 'utf-8',
-            pages: ['foo.html']
+            pages: ['foo.html'],
+            info: emptyArray
         }]
     }];
 
@@ -56,7 +63,8 @@ test('BaseArrayStore > filterDataByUrl()', () => {
         name: "charset",
         values: [{
             name: 'utf-8',
-            pages: ['foo.html', 'bar.html']
+            pages: ['foo.html', 'bar.html'],
+            info: emptyArray
         }]
     }];
 

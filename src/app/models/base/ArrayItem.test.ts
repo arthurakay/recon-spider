@@ -1,9 +1,14 @@
 import ArrayItem from './ArrayItem';
 
+const emptyArray: Array<any> = [];
+
 const data = {
     name: "charset",
     values: {
-        'utf-8': ['foo.html', 'bar.html']
+        'utf-8': {
+            pages: ['foo.html', 'bar.html'],
+            info: emptyArray
+        }
     }
 };
 
@@ -14,7 +19,8 @@ test('ArrayItem', () => {
         name: "charset",
         values: [{
             name: 'utf-8',
-            pages: ['foo.html', 'bar.html']
+            pages: ['foo.html', 'bar.html'],
+            info: emptyArray
         }]
     };
 

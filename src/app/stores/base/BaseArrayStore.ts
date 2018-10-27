@@ -36,7 +36,8 @@ export default class BaseArrayStore extends BaseStore<ArrayItem> {
                         filteredArrayItem.values.push(
                             new ValueItem({
                                 name: valueItem.name,
-                                pages: [this.filterByPageKey]
+                                pages: [this.filterByPageKey],
+                                info: valueItem.info
                             })
                         );
                     }

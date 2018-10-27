@@ -1,41 +1,48 @@
-class ValueItem {
-    constructor() {
-        this.pages = new Set();
-    }
-}
+const {ValueItem} = require('./ValueItem');
 
 class CacheItem {
     constructor() {
         this.values = new Map();
     }
 
-    addValue(value, url) {
-        let newValues = [];
+    /**
+     *
+     * @param values {array} An array of values in form
+     *     [
+     *         {
+     *             name: 'foo',
+     *             info: [...]
+     *         }
+     *     ]
+     * @param url {string} The page on which the value was found
+     */
+    addValues(values, url) {
+        for (let i=0; i<values.length; i++) {
+            const v = values[i];
+            const key = v.name;
 
-        // is value an array or a string?
-        if (!Array.isArray(value)) {
-            newValues.push(value);
-        } else {
-            newValues = value;
-        }
-
-        for (let i=0; i<newValues.length; i++) {
-            const v = newValues[i];
-
-            if (!this.values.has(v)) {
-                this.values.set(v, new ValueItem());
+            if (!this.values.has(key)) {
+                this.values.set(key, new ValueItem());
             }
 
-            let item = this.values.get(v);
-            item.pages.add(url);
+            let item = this.values.get(key);
+            item.setData(url, v.info);
         }
     }
 
+    /**
+     *     {
+     *         'utf-8': {
+     *             pages: ['bar.html', 'foo.html'],
+     *             info: []
+     *         }
+     *     }
+     */
     serialize() {
         const obj = {};
 
         this.values.forEach((valueItem, key) => {
-            obj[key] = Array.from(valueItem.pages)
+            obj[key] = valueItem.serialize();
         });
 
         return obj;

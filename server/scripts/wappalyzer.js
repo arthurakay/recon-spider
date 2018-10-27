@@ -25,7 +25,7 @@ function analyzeWebsite(url, maxDepth = 2) {
                 const app = json.applications[i];
 
                 WAPPALYZER.merge({
-                    [app.name]: app.version
+                    [app.name]: [{name: app.version, info:[]}]
                 }, url);
             }
 

@@ -7,9 +7,12 @@ class ArrayItemCache {
     }
 
     /**
+     * @param newData {object} Data in the form:
+     *     {
+     *         'js-lib': [{name: '1.1.1', info: []}]
+     *     }
      *
-     * @param newData
-     * @param url
+     * @param url {string} The page on which the data was found
      */
     merge(newData = {}, url = '') {
         for (let prop in newData) {
@@ -18,10 +21,28 @@ class ArrayItemCache {
             }
 
             let cacheItem = this.cache.get(prop);
-            cacheItem.addValue(newData[prop], url);
+            cacheItem.addValues(newData[prop], url);
         }
     }
 
+    /**
+     *
+     * @return {Array}
+     *     [
+     *         {
+     *             name: 'js-lib',
+     *             values: {
+     *                 '1.1.1': ['foo.html']
+     *             }
+     *         },
+     *         {
+     *             name: 'meta-tag',
+     *             values: {
+     *                 'utf-8': ['bar.html', 'foo.html']
+     *             }
+     *         }
+     *     ]
+     */
     serialize() {
         const results = [];
 
