@@ -4,6 +4,8 @@ import PageWrapper from './views/PageWrapper';
 import {initSocket} from './utils/SocketUtils';
 import {initStores} from './stores/_AllStores';
 
+import 'antd/dist/antd.css';
+
 declare let module: any;
 
 initSocket()

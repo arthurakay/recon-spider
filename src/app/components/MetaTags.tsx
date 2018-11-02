@@ -1,6 +1,21 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
+import {Table} from 'antd';
+
+const MetaTagValues = (values: Array<any>) => {
+    const valueItems:any = [];
+
+    for (let j=0; j<values.length; j++) {
+        let valueItem: ValueItem = values[j];
+
+        valueItems.push(<li>{valueItem.name}</li>);
+    }
+
+    return (
+        <ul>{valueItems}</ul>
+    );
+};
 
 interface MetaTagsProps {
     metaTagsStore?: any
@@ -8,39 +23,20 @@ interface MetaTagsProps {
 
 @inject('metaTagsStore') @observer
 export default class MetaTags extends React.Component<MetaTagsProps, {}> {
-
     render() {
-        const rows: any = [];
+        const columns = [{
+            title: 'Meta Tag',
+            dataIndex: 'name',
+            key: 'name'
+        }, {
+            title: 'Value',
+            dataIndex: 'values',
+            key: 'values',
+            render: MetaTagValues
+        }];
 
-        for (let i=0; i<this.props.metaTagsStore.data.length; i++) {
-            const row = this.props.metaTagsStore.data[i];
-
-            const values:any = [];
-
-            for (let j=0; j<row.values.length; j++) {
-                let valueItem: ValueItem = row.values[j];
-
-                values.push(<li>{valueItem.name}</li>);
-            }
-
-            rows.push(
-                <tr>
-                    <td>{row.name}</td>
-                    <td><ul>{values}</ul></td>
-                </tr>
-            );
-        }
-
-        return  (
-            <div className="KeyValue">
-                <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
-                    <tr>
-                        <th>Meta Tag</th>
-                        <th>Values</th>
-                    </tr>
-                    {rows}
-                </table>
-            </div>
+        return (
+            <Table columns={columns} dataSource={this.props.metaTagsStore.data} />
         );
     }
 }

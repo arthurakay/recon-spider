@@ -1,6 +1,21 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
+import {Table} from 'antd';
+
+const HeaderValues = (values: Array<any>) => {
+    const valueItems:any = [];
+
+    for (let j=0; j<values.length; j++) {
+        let valueItem: ValueItem = values[j];
+
+        valueItems.push(<li>{valueItem.name}</li>);
+    }
+
+    return (
+        <ul>{valueItems}</ul>
+    );
+};
 
 interface HeadersProps {
     headerStore?: any
@@ -8,39 +23,20 @@ interface HeadersProps {
 
 @inject('headerStore') @observer
 export default class Headers extends React.Component<HeadersProps, {}> {
-
     render() {
-        const rows: any = [];
-
-        for (let i=0; i<this.props.headerStore.data.length; i++) {
-            const row = this.props.headerStore.data[i];
-
-            const values:any = [];
-
-            for (let j=0; j<row.values.length; j++) {
-                let valueItem: ValueItem = row.values[j];
-
-                values.push(<li>{valueItem.name}</li>);
-            }
-
-            rows.push(
-                <tr>
-                    <td>{row.name}</td>
-                    <td><ul>{values}</ul></td>
-                </tr>
-            );
-        }
+        const columns = [{
+            title: 'Header',
+            dataIndex: 'name',
+            key: 'name'
+        }, {
+            title: 'Value',
+            dataIndex: 'values',
+            key: 'values',
+            render: HeaderValues
+        }];
 
         return  (
-            <div className="KeyValue">
-                <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
-                    <tr>
-                        <th>Header</th>
-                        <th>Values</th>
-                    </tr>
-                    {rows}
-                </table>
-            </div>
+            <Table columns={columns} dataSource={this.props.headerStore.data} />
         );
     }
 }

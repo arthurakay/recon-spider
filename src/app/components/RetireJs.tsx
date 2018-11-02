@@ -1,6 +1,32 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
+import {Table} from 'antd';
+
+const RetireJsValues = (values: Array<any>) => {
+    const valueItems:any = [];
+    const info:any = [];
+
+    for (let j=0; j<values.length; j++) {
+        let valueItem: ValueItem = values[j];
+
+        for (let k=0; k<valueItem.info.length; k++) {
+            let infoItem: any = valueItem.info[k];
+            info.push(<Vulnerability {...infoItem} />);
+        }
+
+        valueItems.push(
+            <li>
+                {valueItem.name}
+                <ul>{info}</ul>
+            </li>
+        );
+    }
+
+    return (
+        <ul>{valueItems}</ul>
+    );
+};
 
 interface VulnerabilityProp {
     severity: string;
@@ -13,7 +39,6 @@ interface VulnerabilityProp {
 }
 
 const Vulnerability = (props: VulnerabilityProp) => {
-    console.log(props)
     return (
         <div className="retirejs-vulnerability">
             <h4>Issue: {props.identifiers.summary}</h4>
@@ -29,47 +54,20 @@ interface RetireJsProps {
 
 @inject('retireJsStore') @observer
 export default class RetireJs extends React.Component<RetireJsProps, {}> {
-
     render() {
-        const rows: any = [];
-
-        for (let i=0; i<this.props.retireJsStore.data.length; i++) {
-            const row = this.props.retireJsStore.data[i];
-
-            const values:any = [];
-            const info:any = [];
-
-            for (let j=0; j<row.values.length; j++) {
-                let valueItem: ValueItem = row.values[j];
-
-                values.push(<li>{valueItem.name}</li>);
-
-                for (let k=0; k<valueItem.info.length; k++) {
-                    let infoItem: any = valueItem.info[k];
-                    info.push(<Vulnerability {...infoItem} />);
-                }
-            }
-
-            rows.push(
-                <tr>
-                    <td>{row.name}</td>
-                    <td><ul>{values}</ul></td>
-                    <td>{info}</td>
-                </tr>
-            );
-        }
+        const columns = [{
+            title: 'Header',
+            dataIndex: 'name',
+            key: 'name'
+        }, {
+            title: 'Version / Info',
+            dataIndex: 'values',
+            key: 'values',
+            render: RetireJsValues
+        }];
 
         return  (
-            <div className="KeyValue">
-                <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
-                    <tr>
-                        <th>JS Library</th>
-                        <th>Version</th>
-                        <th>Info</th>
-                    </tr>
-                    {rows}
-                </table>
-            </div>
+            <Table columns={columns} dataSource={this.props.retireJsStore.data} />
         );
     }
 }
