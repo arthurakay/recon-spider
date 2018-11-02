@@ -32,7 +32,7 @@ export default class Headers extends React.Component<HeadersProps, {}> {
         }
 
         return  (
-            <div id="Headers">
+            <div className="KeyValue">
                 <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
                     <tr>
                         <th>Header</th>

@@ -17,12 +17,12 @@ var hash = {
 };
 
 /**
- *
+ * Add results parsed by evaluatePage() to our cache after checking them against RetireJS
  * @param js {object} An object with the form:
  *     {
  *         'js-lib': ['1.1.1']
  *     }
- * @param url
+ * @param url {string}
  */
 function addJs(js, url) {
     const newData = {};
@@ -56,34 +56,69 @@ function addJs(js, url) {
 }
 
 /**
+ * Add results parsed by RetireJS into our cache
+ * @param results {array} An array in form:
  *
+ *     [{
+           "version":"3.3.7",
+           "component":"bootstrap",
+           "detection":"filecontent",
+           "vulnerabilities":[
+               {"info":["https://github.com/twbs/bootstrap/issues/20184"],"below":"4.1.2","severity":"medium","identifiers":{"issue":"20184","summary":"XSS in data-target property of scrollspy","CVE":["CVE-2018-14041"]}},
+               {"info":["https://github.com/twbs/bootstrap/issues/20184"],"below":"4.1.2","severity":"medium","identifiers":{"issue":"20184","summary":"XSS in collapse data-parent attribute","CVE":["CVE-2018-14040"]}},
+               {"info":["https://github.com/twbs/bootstrap/issues/20184"],"below":"4.1.2","severity":"medium","identifiers":{"issue":"20184","summary":"XSS in data-container property of tooltip","CVE":["CVE-2018-14042"]}}
+           ]
+ *     }]
+ *
+ * @param url {string}
+ */
+function addScannedJs(results, url) {
+    const newData = {};
+
+    for (let i=0; i<results.length; i++) {
+        const result = results[i];
+        const lib = result.component;
+
+        newData[lib] = [];
+        newData[lib].push({
+            name: result.version,
+            info: result.vulnerabilities
+        });
+    }
+
+    RETIRE_JS.merge(newData, url);
+
+    sendMsg('retireJs', JSON.stringify(
+        RETIRE_JS.serialize()
+    ));
+}
+
+/**
  * @param uris {array} Array of strings containing identified <script src="" />
  * @param page {string}
  */
 function scanScripts(uris = [], page) {
     for (let i=0; i<uris.length; i++) {
-        RetireJS.scanUri(uris[i], getRetireJS());
+        const scriptUrl = uris[i];
 
-        const url = new URI(uris[i]);
-        RetireJS.scanFileName(url.filename(), getRetireJS());
+        const scanUri_results = RetireJS.scanUri(scriptUrl, getRetireJS());
+        addScannedJs(scanUri_results, scriptUrl);
 
-        request(uris[i], (error, response, body) => {
+        const url = new URI(scriptUrl);
+        const scanFileName_results = RetireJS.scanFileName(url.filename(), getRetireJS());
+        addScannedJs(scanFileName_results, scriptUrl);
+
+        request(scriptUrl, (error, response, body) => {
             if (error) {
                 console.warn(
-                    `Got ${response.statusCode} when trying to download ${uris[i]}`
+                    `Got ${response.statusCode} when trying to download ${scriptUrl}`
                 );
             } else {
-                console.log(`scanFileContent(): ${uris[i]}`);
-                const results = RetireJS.scanFileContent(body, getRetireJS(), hash)
+                const scanFileContent_results = RetireJS.scanFileContent(body, getRetireJS(), hash);
+                addScannedJs(scanFileContent_results, scriptUrl);
             }
         });
     }
-
-    // RETIRE_JS.merge(js, url);
-    //
-    // sendMsg('retireJs', JSON.stringify(
-    //     RETIRE_JS.serialize()
-    // ));
 }
 
 /**
@@ -123,7 +158,7 @@ function downloadRetireJS() {
     return new Promise((resolve, reject) => {
         download(repoUrl + "?" + updatedAt)
             .then((repoData) => {
-            retireJsRepo = JSON.parse(repoData);
+            retireJsRepo = JSON.parse(RetireJS.replaceVersion(repoData));
             console.log("RetireJS loaded!");
 
             vulnerableJs = {};

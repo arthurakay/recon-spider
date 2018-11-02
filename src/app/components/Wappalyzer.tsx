@@ -32,7 +32,7 @@ export default class Wappalyzer extends React.Component<WappalyzerProps, {}> {
         }
 
         return  (
-            <div id="Wappalyzer">
+            <div className="KeyValue">
                 <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
                     <tr>
                         <th>JS Library</th>

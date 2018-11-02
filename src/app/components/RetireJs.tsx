@@ -60,7 +60,7 @@ export default class RetireJs extends React.Component<RetireJsProps, {}> {
         }
 
         return  (
-            <div id="Headers">
+            <div className="KeyValue">
                 <table cellPadding={0} cellSpacing={0} style={{width: '100%'}}>
                     <tr>
                         <th>JS Library</th>

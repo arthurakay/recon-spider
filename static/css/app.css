@@ -35,3 +35,10 @@ html, body, #root, #main {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.KeyValue table > tr:hover {
+    background-color: #f0f0ff;
+}
+.KeyValue table tr td {
+    vertical-align: top;
+}
