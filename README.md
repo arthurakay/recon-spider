@@ -4,16 +4,25 @@
 
 *Licensed under the [GPLv3](https://github.com/arthurakay/spook.js/blob/master/LICENSE.md) because of GPL dependencies.*
 
+## Build and Run Docker Container
+
+If you just want to kick the tires, run the following:
+
+    npm i
+    npm run create-distro
+    npm run docker-container
+
+Then open your browser to `http://localhost:4000` and start kicking.
+
 ## Development
 
-The client application is built using `react`, `typescript` and `webpack` -- any edits you make to the files under 
-`/src/` will need to be recompiled using the following command:
+The client application (`/src/`) is built using `react`, `typescript` and `webpack`. Webpack HMR is enabled in 
+development, so to fire things up run:
 
-    npm run build
-    
-The server is built using standard Node.js and `express` settings. Simply run the following command to compile the client
-application and then fire up the server:
+    npm i
+    npm run start
 
-    npm start
-    
-Then open your browser at `http://localhost:3000`.
+The server is built using standard Node.js and `express` settings. If you make changes to any files under `/server/`, 
+you'll need to start and restart the process above. 
+
+To view the application, open your browser at `http://localhost:3000`.
