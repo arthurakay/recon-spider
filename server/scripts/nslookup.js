@@ -9,6 +9,9 @@ const NS_LOOKUP = {data: 'No data.'};
 function nslookup(domain) {
     child_process.exec(`nslookup ${domain}`, (error, stdOut, stdErr) => {
         if (error) {
+            console.log(`NSLOOKUP error code: ${error.code}`);
+            console.log(`NSLOOKUP stdout: ${stdOut}`);
+
             NS_LOOKUP.data = 'An error occurred.';
         } else {
             NS_LOOKUP.data = stdOut;

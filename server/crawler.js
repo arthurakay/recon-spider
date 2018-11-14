@@ -16,6 +16,8 @@ const {fn} = require('./evaluatePage');
  */
 function launch() {
     return HCCrawler.launch({
+        args: ['--no-sandbox'],
+
         customCrawl: async (page, crawl) => {
             const result = await crawl();
 

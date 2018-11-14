@@ -1,5 +1,6 @@
 /.idea
 /git_hooks
+/node_modules
 /src
 /static
 /.babelrc
@@ -7,6 +8,5 @@
 /.gitignore
 /Dockerfile
 /DOCUMENTATION.md
-/package-lock.json
 /tsconfig.json
 /webpack.config.js
