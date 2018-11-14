@@ -1,19 +1,19 @@
 import {action, computed, observable, reaction} from 'mobx';
 import BaseStore from './base/BaseStore';
-import NsLookup from '../models/NsLookup';
+import WhoIs from '../models/WhoIs';
 import AllStores from './_AllStores';
 
-interface NsLookupResponse {
+interface WhoIsResponse {
     data: string;
 }
 
-export default class NsLookupStore extends BaseStore<NsLookup> {
-    @observable _data: NsLookup = null;
+export default class WhoIsStore extends BaseStore<WhoIs> {
+    @observable _data: WhoIs = null;
 
     constructor() {
         super({
-            model: NsLookup,
-            socketKey: 'nslookup'
+            model: WhoIs,
+            socketKey: 'whois'
         });
     }
 
@@ -29,14 +29,14 @@ export default class NsLookupStore extends BaseStore<NsLookup> {
     }
 
     @action
-    setData(response: NsLookupResponse): void {
-        this._data = new NsLookup({
+    setData(response: WhoIsResponse): void {
+        this._data = new WhoIs({
             value: response.data
         });
     }
 
     @computed
-    get data(): NsLookup {
+    get data(): WhoIs {
         return this._data;
     }
 }

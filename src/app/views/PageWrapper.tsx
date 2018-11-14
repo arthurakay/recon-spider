@@ -20,12 +20,14 @@ const PageWrapper = () => (
 const PageWrapperProvider = () => (
     <Provider
         crawlerStore={Stores.crawlerStore}
+        dirbStore={Stores.dirbStore}
         headerStore={Stores.headerStore}
         metaTagsStore={Stores.metaTagsStore}
         nsLookupStore={Stores.nsLookupStore}
         retireJsStore={Stores.retireJsStore}
         sitemapStore={Stores.sitemapStore}
         wappalyzerStore={Stores.wappalyzerStore}
+        whoisStore={Stores.whoisStore}
     >
         <PageWrapper />
     </Provider>

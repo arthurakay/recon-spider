@@ -6,6 +6,8 @@ const WAPPALYZER = require('./scripts/wappalyzer');
 const HEADERS = require('./scripts/headers');
 const META_TAGS = require('./scripts/metatags');
 const SITEMAP = require('./scripts/sitemap');
+const WHOIS = require('./scripts/whois');
+const DIRB = require('./scripts/dirb');
 
 const {sendMsg} = require('./socket');
 const {fn} = require('./evaluatePage');
@@ -71,6 +73,8 @@ function launch() {
  */
 async function crawl({domain, maxDepth, obey, hostname}) {
     NSLOOKUP.init(hostname);
+    WHOIS.init(hostname);
+    DIRB.init(domain);
     WAPPALYZER.init(domain, maxDepth);
     HEADERS.init();
     META_TAGS.init();

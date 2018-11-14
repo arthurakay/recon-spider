@@ -1,19 +1,19 @@
 import {action, computed, observable, reaction} from 'mobx';
 import BaseStore from './base/BaseStore';
-import NsLookup from '../models/NsLookup';
+import Dirb from '../models/Dirb';
 import AllStores from './_AllStores';
 
-interface NsLookupResponse {
+interface DirbResponse {
     data: string;
 }
 
-export default class NsLookupStore extends BaseStore<NsLookup> {
-    @observable _data: NsLookup = null;
+export default class DirbStore extends BaseStore<Dirb> {
+    @observable _data: Dirb = null;
 
     constructor() {
         super({
-            model: NsLookup,
-            socketKey: 'nslookup'
+            model: Dirb,
+            socketKey: 'dirb'
         });
     }
 
@@ -29,14 +29,14 @@ export default class NsLookupStore extends BaseStore<NsLookup> {
     }
 
     @action
-    setData(response: NsLookupResponse): void {
-        this._data = new NsLookup({
+    setData(response: DirbResponse): void {
+        this._data = new Dirb({
             value: response.data
         });
     }
 
     @computed
-    get data(): NsLookup {
+    get data(): Dirb {
         return this._data;
     }
 }

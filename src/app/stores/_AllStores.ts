@@ -5,6 +5,8 @@ import MetaTagsStore from './MetaTagStore';
 import NsLookupStore from './NsLookupStore';
 import RetireJsStore from './RetireJsStore';
 import WappalyzerStore from './WappalyzerStore';
+import WhoIsStore from './WhoIsStore';
+import DirbStore from './DirbStore';
 
 interface StoresInterface {
     [id: string]: any
@@ -12,12 +14,14 @@ interface StoresInterface {
 
 const stores:StoresInterface = {
     crawlerStore: CrawlerStore,
+    dirbStore: DirbStore,
     headerStore: HeaderStore,
     metaTagsStore: MetaTagsStore,
     nsLookupStore: NsLookupStore,
     retireJsStore: RetireJsStore,
     sitemapStore: SiteMapStore,
-    wappalyzerStore: WappalyzerStore
+    wappalyzerStore: WappalyzerStore,
+    whoisStore: WhoIsStore
 };
 
 const AllStores: StoresInterface = {};

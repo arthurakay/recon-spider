@@ -16,6 +16,15 @@ export default class WappalyzerStore extends BaseArrayStore {
      */
     initialize() {
         reaction(
+            () => AllStores.crawlerStore.loading,
+            action((isLoading: boolean) => {
+                if (isLoading) {
+                    this.loading = true;
+                }
+            })
+        );
+
+        reaction(
             () => AllStores.sitemapStore.filterByUrl,
             action((url: string) => {
                 this.filterDataByUrl(url);

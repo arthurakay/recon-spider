@@ -4,10 +4,10 @@ const {sendMsg, getServer} = require('../socket');
 const NS_LOOKUP = {data: 'No data.'};
 
 /**
- * @param {string} domain e.g. akawebdesign.com
+ * @param {string} hostname e.g. akawebdesign.com
  */
-function nslookup(domain) {
-    child_process.exec(`nslookup ${domain}`, (error, stdOut, stdErr) => {
+function nslookup(hostname) {
+    child_process.exec(`nslookup ${hostname}`, (error, stdOut, stdErr) => {
         if (error) {
             console.log(`NSLOOKUP error code: ${error.code}`);
             console.log(`NSLOOKUP stdout: ${stdOut}`);
@@ -23,16 +23,16 @@ function nslookup(domain) {
 
 /**
  *
- * @param domain
+ * @param hostname
  */
-function init(domain) {
+function init(hostname) {
     const ioServer = getServer();
 
     ioServer.on('connection', () => {
         sendMsg('nslookup', JSON.stringify(NS_LOOKUP));
     });
 
-    nslookup(domain);
+    nslookup(hostname);
 }
 
 module.exports = {

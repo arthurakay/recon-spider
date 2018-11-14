@@ -2,12 +2,14 @@ import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import {Tabs, Icon} from 'antd';
 
-import Loading from '../components/Loading';
 import Headers from '../components/Headers';
 import MetaTags from '../components/MetaTags';
 import NsLookup from '../components/NsLookup';
 import RetireJs from '../components/RetireJs';
 import Wappalyzer from '../components/Wappalyzer';
+import WhoIs from '../components/WhoIs';
+import Dirb from '../components/Dirb';
+import Status from '../components/Status';
 
 const TabPane = Tabs.TabPane;
 
@@ -20,11 +22,15 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
     render() {
         return (
             <div className="MainContent-view">
-                <Loading loading={this.props.crawlerStore.loading} />
-
                 <Tabs
-                    defaultActiveKey="1"
+                    defaultActiveKey="0"
                 >
+                    <TabPane
+                        tab={<span><Icon type="loading" />Status</span>}
+                        key="0"
+                    >
+                        <Status/>
+                    </TabPane>
                     <TabPane
                         tab={<span><Icon type="cloud" />NSLookup</span>}
                         key="1"
@@ -54,6 +60,18 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                         key="5"
                     >
                         <Wappalyzer />
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="question-circle" />WhoIs</span>}
+                        key="6"
+                    >
+                        <WhoIs />
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="audit" />dirb</span>}
+                        key="7"
+                    >
+                        <Dirb />
                     </TabPane>
                 </Tabs>
             </div>
