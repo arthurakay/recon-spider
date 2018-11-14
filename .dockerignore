@@ -1,0 +1,12 @@
+/.idea
+/git_hooks
+/src
+/static
+/.babelrc
+/.dockerignore
+/.gitignore
+/Dockerfile
+/DOCUMENTATION.md
+/package-lock.json
+/tsconfig.json
+/webpack.config.js

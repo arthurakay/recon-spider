@@ -9,7 +9,11 @@
   "scripts": {
     "test": "jest",
     "build": "./node_modules/.bin/webpack",
-    "start": "npm run build && node server.js"
+    "start": "npm run build && node server.js",
+    "build-prune": "npm prune --production",
+    "docker-build": "docker build -t spookjs .",
+    "docker-container": "docker run -d -p 4000:3000 spookjs:latest && echo 'App running on localhost:4000'",
+    "create-distro": "git clean -fxd && npm i && npm run build && npm run build-prune && npm run docker-build"
   },
   "author": "Arthur Kay",
   "license": "GPL-3.0",
@@ -35,7 +39,6 @@
     "@types/lodash": "^4.14.116",
     "@types/react": "^16.4.9",
     "@types/react-dom": "^16.0.7",
-    "@types/react-tabs": "^2.3.0",
     "antd": "^3.10.3",
     "axios": "^0.18.0",
     "babel-jest": "^23.6.0",
@@ -47,7 +50,6 @@
     "jest": "^23.6.0",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.5",
-    "react-tabs": "^2.3.0",
     "source-map-loader": "^0.2.3",
     "style-loader": "^0.23.1",
     "ts-jest": "^23.10.4",

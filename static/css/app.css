@@ -8,6 +8,11 @@ html, body, #root, #main {
     height: 100%;
 }
 
+.DarkTheme {
+    background-color: #001529;
+    color: #fff;
+}
+
 /**
  * Loading component
  */

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
-import { Tree } from 'antd';
+import { Tree, Icon } from 'antd';
 import TreeNode from '../models/TreeNode';
 
 const TreeNodeComp = Tree.TreeNode;
@@ -13,25 +13,25 @@ interface TreeState {
     selectedKeys: Array<string>
 }
 
-interface NodeSelectedEvent {
-    selected: boolean;
-    selectedNodes: Array<any>;
-    node: any;
-    event: any;
-    nativeEvent: any;
-}
-
 @inject('sitemapStore') @observer
 export default class Sitemap extends React.Component<TreeProps, TreeState> {
     state: Readonly<TreeState> = {
         selectedKeys: []
     };
 
+    /*
+       TODO: Add icons after the node -- launch page in new window
+       TODO: Properly display root node?
+     */
     renderTreeNodes = (data: Array<TreeNode>) => {
         return data.map((item: TreeNode) => {
             if (item.children) {
                 return (
-                    <TreeNodeComp title={item.title} key={item.key} dataRef={item}>
+                    <TreeNodeComp
+                        title={item.title}
+                        key={item.key}
+                        dataRef={item}
+                    >
                         {this.renderTreeNodes(item.children)}
                     </TreeNodeComp>
                 );
@@ -40,6 +40,9 @@ export default class Sitemap extends React.Component<TreeProps, TreeState> {
         });
     }
 
+    /*
+        TODO: don't allow users to select nodes that aren't actually pages
+     */
     onSelect = (selectedKeys: Array<string>, info: any) => {
         this.setState({ selectedKeys });
 
@@ -56,7 +59,9 @@ export default class Sitemap extends React.Component<TreeProps, TreeState> {
                 <h2>Sitemap</h2>
 
                 <Tree
+                    autoExpandParent
                     defaultExpandAll
+                    defaultExpandParent
                     onSelect={this.onSelect}
                     selectedKeys={this.state.selectedKeys}
                 >

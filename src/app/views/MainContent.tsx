@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
+import {Tabs, Icon} from 'antd';
+
 import Loading from '../components/Loading';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css'
 import Headers from '../components/Headers';
 import MetaTags from '../components/MetaTags';
 import NsLookup from '../components/NsLookup';
 import RetireJs from '../components/RetireJs';
 import Wappalyzer from '../components/Wappalyzer';
+
+const TabPane = Tabs.TabPane;
 
 interface MainContentProps {
     crawlerStore?: any
@@ -20,30 +22,39 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
             <div className="MainContent-view">
                 <Loading loading={this.props.crawlerStore.loading} />
 
-                <Tabs>
-                    <TabList>
-                        <Tab>NsLookup</Tab>
-                        <Tab>HTTP Headers</Tab>
-                        <Tab>Meta Tags</Tab>
-                        <Tab>RetireJS</Tab>
-                        <Tab>Wappalyzer</Tab>
-                    </TabList>
-
-                    <TabPanel>
+                <Tabs
+                    defaultActiveKey="1"
+                >
+                    <TabPane
+                        tab={<span><Icon type="cloud" />NSLookup</span>}
+                        key="1"
+                    >
                         <NsLookup />
-                    </TabPanel>
-                    <TabPanel>
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="global" />HTTP Headers</span>}
+                        key="2"
+                    >
                         <Headers />
-                    </TabPanel>
-                    <TabPanel>
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="code" />Meta Tags</span>}
+                        key="3"
+                    >
                         <MetaTags />
-                    </TabPanel>
-                    <TabPanel>
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="exception" />RetireJS</span>}
+                        key="4"
+                    >
                         <RetireJs />
-                    </TabPanel>
-                    <TabPanel>
+                    </TabPane>
+                    <TabPane
+                        tab={<span><Icon type="desktop" />Wappalyzer</span>}
+                        key="5"
+                    >
                         <Wappalyzer />
-                    </TabPanel>
+                    </TabPane>
                 </Tabs>
             </div>
         );
