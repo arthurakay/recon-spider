@@ -5,6 +5,7 @@ import AllStores from './_AllStores';
 
 interface DirbResponse {
     data: string;
+    complete: boolean;
 }
 
 export default class DirbStore extends BaseStore<Dirb> {
@@ -33,6 +34,7 @@ export default class DirbStore extends BaseStore<Dirb> {
         this._data = new Dirb({
             value: response.data
         });
+        this.loading = response.complete;
     }
 
     @computed

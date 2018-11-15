@@ -12,16 +12,27 @@ router.get('/', (req, res) => {
 });
 
 router.post('/api/crawl', (req, res) => {
-    const domain = req.body.domain;
-    const hostname = new URI(domain).hostname();
+    const input = req.body.domain;
+
     const maxDepth = parseInt(req.body.maxDepth);
     const obey = false;
 
-    console.log(`Preparing to crawl ${domain} (${hostname})`);
-    console.log(`Max depth: ${maxDepth}`);
-    console.log(`Respect robots.txt? ${obey ? 'true' : 'false'}`);
+    const url = new URI(input);
 
-    crawl({domain, hostname, maxDepth, obey});
+    // protect input by validating the URL provided to the API
+    if (url.domain() !== '') {
+        console.log(`Preparing to crawl ${url.origin()}`);
+        console.log(`Max depth: ${maxDepth}`);
+        console.log(`Respect robots.txt? ${obey ? 'true' : 'false'}`);
+
+        crawl({
+            url: url.origin(),
+            domain: url.domain(),
+            hostname: url.hostname(),
+            maxDepth,
+            obey
+        });
+    }
 
     res.send('');
 });

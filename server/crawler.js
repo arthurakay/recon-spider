@@ -71,22 +71,22 @@ function launch() {
  * @param hostname
  * @return {Promise<void>}
  */
-async function crawl({domain, maxDepth, obey, hostname}) {
+async function crawl({url, domain, hostname, maxDepth, obey}) {
     NSLOOKUP.init(hostname);
-    WHOIS.init(hostname);
-    DIRB.init(domain);
-    WAPPALYZER.init(domain, maxDepth);
+    WHOIS.init(domain);
+    DIRB.init(url);
+    WAPPALYZER.init(url, maxDepth);
     HEADERS.init();
     META_TAGS.init();
     RETIRE_JS.init();
-    SITEMAP.init(domain);
+    SITEMAP.init(url);
 
     // Launch the crawler with persisting cache
     const crawler = await launch();
 
     await crawler.queue({
         skipDuplicates: true,
-        url: domain,
+        url: url,
         maxDepth: maxDepth,
         obeyRobotsTxt: obey,
         allowedDomains: [hostname]

@@ -12,6 +12,7 @@
     "start": "npm run build && node server.js",
     "docker-build": "docker build -t spookjs .",
     "docker-container": "docker run -d -p 4000:3000 --dns=1.1.1.1 spookjs:latest && echo 'App running on localhost:4000'",
+    "docker-container-debug": "docker run -p 4000:3000 --dns=1.1.1.1 spookjs:latest sh && echo 'App running on localhost:4000'",
     "create-distro": "npm run build && npm run docker-build"
   },
   "author": "Arthur Kay",

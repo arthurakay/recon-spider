@@ -1,21 +1,36 @@
 const child_process = require('child_process');
+const readline = require('readline');
 const {sendMsg, getServer} = require('../socket');
 
-const WHOIS = {data: 'No data.'};
+const WHOIS = {data: ''};
 
 /**
  * @param {string} hostname e.g. akawebdesign.com
  */
 function whois(hostname) {
-    child_process.exec(`whois ${hostname}`, (error, stdOut, stdErr) => {
-        if (error) {
-            console.log(`WHOIS error code: ${error.code}`);
-            console.log(`WHOIS stdout: ${stdOut}`);
+    const shell = child_process.spawn('whois', [hostname]);
 
-            WHOIS.data = 'An error occurred.';
-        } else {
-            WHOIS.data = stdOut;
-        }
+    readline.createInterface({
+        input     : shell.stdout,
+        terminal  : false
+    }).on('line', function(line) {
+        WHOIS.data += `${line}\n`;
+        sendMsg('whois', JSON.stringify(WHOIS));
+    });
+
+    shell.stderr.on('data', (data) => {
+        WHOIS.data += `${data.toString()}\n`;
+        sendMsg('whois', JSON.stringify(WHOIS));
+    });
+
+    shell.on('close', (code) => {
+        sendMsg('whois', JSON.stringify(WHOIS));
+    });
+
+    shell.on('error', (err) => {
+        console.log(`WHOIS error code: ${err.code}`);
+        console.log(`WHOIS error message: ${error.message}`);
+        WHOIS.data += `${err.message}\n`;
 
         sendMsg('whois', JSON.stringify(WHOIS));
     });

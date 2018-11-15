@@ -141,7 +141,7 @@ function download(url) {
     return new Promise((resolve, reject) => {
         request(url, (error, response, body) => {
             if (error) {
-                console.warn("Got " + response.statusCode + " when trying to download " + url);
+                console.warn("Error when trying to download RetireJS: " + url);
                 reject(response);
             }
 
