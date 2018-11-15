@@ -5,15 +5,21 @@ import {assign} from 'lodash';
 interface BaseStoreOptions {
     model: BaseModel,
     [id: string]: any,
-    socketKey?: string
+    socketKey?: string,
+    streaming?: boolean
 }
 
 class BaseStore<T extends BaseModel> {
     private socketKey: string = '';
 
-    @observable _data: any = null;
-    @observable model:BaseModel = null;
-    @observable loading: boolean = false;
+    public streaming: boolean = false;
+    public model:BaseModel = null;
+
+    @observable
+    public _data: any = null;
+
+    @observable
+    public loading: boolean = false;
 
     /**
      * @param additionalObservables
@@ -27,7 +33,10 @@ class BaseStore<T extends BaseModel> {
             const global = (<any>window);
 
             global.SOCKET.on(this.socketKey, (jsonMsg: string) => {
-                this.loading = false;
+                // streaming responses should set their loading state in setData()
+                if (!this.streaming) {
+                    this.loading = false;
+                }
 
                 this.setData(JSON.parse(jsonMsg));
             });

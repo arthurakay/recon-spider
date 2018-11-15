@@ -14,7 +14,8 @@ export default class DirbStore extends BaseStore<Dirb> {
     constructor() {
         super({
             model: Dirb,
-            socketKey: 'dirb'
+            socketKey: 'dirb',
+            streaming: true
         });
     }
 
