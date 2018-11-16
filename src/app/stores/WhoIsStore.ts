@@ -13,7 +13,8 @@ export default class WhoIsStore extends BaseStore<WhoIs> {
     constructor() {
         super({
             model: WhoIs,
-            socketKey: 'whois'
+            socketKey: 'whois',
+            single: true
         });
     }
 

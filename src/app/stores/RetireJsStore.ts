@@ -21,5 +21,12 @@ export default class RetireJsStore extends BaseArrayStore {
                 this.filterDataByUrl(url);
             })
         );
+
+        reaction(
+            () => AllStores.crawlerStore.loading,
+            action((isLoading: boolean) => {
+                this.loading = isLoading;
+            })
+        );
     }
 }

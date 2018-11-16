@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
+import {Spin} from 'antd';
 
 interface WhoIsProps {
     whoisStore?: any
@@ -9,7 +10,9 @@ export default class WhoIs extends React.Component<WhoIsProps, {}> {
     render() {
         return (
             <div className="whois">
-                <pre>{this.props.whoisStore.data && this.props.whoisStore.data.value}</pre>
+                <Spin tip="Loading..." spinning={this.props.whoisStore.loading}>
+                    <pre>{this.props.whoisStore.data && this.props.whoisStore.data.value}</pre>
+                </Spin>
             </div>
         );
     }

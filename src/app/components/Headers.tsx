@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
-import {Table} from 'antd';
+import {Table, Spin} from 'antd';
 
 const HeaderValues = (values: Array<any>) => {
     const valueItems:any = [];
@@ -36,7 +36,9 @@ export default class Headers extends React.Component<HeadersProps, {}> {
         }];
 
         return  (
-            <Table columns={columns} dataSource={this.props.headerStore.data} />
+            <Spin tip="Loading..." spinning={this.props.headerStore.loading}>
+                <Table columns={columns} dataSource={this.props.headerStore.data} />
+            </Spin>
         );
     }
 }

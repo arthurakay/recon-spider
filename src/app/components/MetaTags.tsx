@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
-import {Table} from 'antd';
+import {Table, Spin} from 'antd';
 
 const MetaTagValues = (values: Array<any>) => {
     const valueItems:any = [];
@@ -36,7 +36,9 @@ export default class MetaTags extends React.Component<MetaTagsProps, {}> {
         }];
 
         return (
-            <Table columns={columns} dataSource={this.props.metaTagsStore.data} />
+            <Spin tip="Loading..." spinning={this.props.metaTagsStore.loading}>
+                <Table columns={columns} dataSource={this.props.metaTagsStore.data} />
+            </Spin>
         );
     }
 }

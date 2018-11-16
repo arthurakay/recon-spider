@@ -7,6 +7,7 @@ import RetireJsStore from './RetireJsStore';
 import WappalyzerStore from './WappalyzerStore';
 import WhoIsStore from './WhoIsStore';
 import DirbStore from './DirbStore';
+import NiktoStore from './NiktoStore';
 
 interface StoresInterface {
     [id: string]: any
@@ -17,6 +18,7 @@ const stores:StoresInterface = {
     dirbStore: DirbStore,
     headerStore: HeaderStore,
     metaTagsStore: MetaTagsStore,
+    niktoStore: NiktoStore,
     nsLookupStore: NsLookupStore,
     retireJsStore: RetireJsStore,
     sitemapStore: SiteMapStore,

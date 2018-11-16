@@ -5,11 +5,12 @@ import {Spin, Card, Col, Row} from 'antd';
 interface StatusProps {
     crawlerStore?: any;
     dirbStore?: any;
+    niktoStore?: any;
     nsLookupStore?: any;
     wappalyzerStore?: any;
     whoisStore?: any;
 }
-@inject('crawlerStore', 'dirbStore', 'nsLookupStore', 'wappalyzerStore', 'whoisStore') @observer
+@inject('crawlerStore', 'dirbStore', 'niktoStore', 'nsLookupStore', 'wappalyzerStore', 'whoisStore') @observer
 export default class Status extends React.Component<StatusProps, {}> {
     render() {
         return (
@@ -22,15 +23,9 @@ export default class Status extends React.Component<StatusProps, {}> {
                     completes a scan of the website.
                 </p>
 
-                <Row gutter={16}>
-                    <Col span={8}>
-                        <Spin spinning={this.props.crawlerStore.loading}>
-                            <Card title="Site Crawler" bordered={false}>
-                                Using headless-chrome-crawler to discover pages on the website.
-                            </Card>
-                        </Spin>
-                    </Col>
+                <h3>Utilities</h3>
 
+                <Row gutter={16}>
                     <Col span={8}>
                         <Spin spinning={this.props.nsLookupStore.loading}>
                             <Card title="NSLookup" bordered={false}>
@@ -46,9 +41,23 @@ export default class Status extends React.Component<StatusProps, {}> {
                             </Card>
                         </Spin>
                     </Col>
+
+                    <Col span={8}>
+
+                    </Col>
                 </Row>
 
+                <h3>HTML Crawlers</h3>
+
                 <Row gutter={16}>
+                    <Col span={8}>
+                        <Spin spinning={this.props.crawlerStore.loading}>
+                            <Card title="Site Crawler" bordered={false}>
+                                Using headless-chrome-crawler to discover pages on the website.
+                            </Card>
+                        </Spin>
+                    </Col>
+
                     <Col span={8}>
                         <Spin spinning={this.props.crawlerStore.loading}>
                             <Card title="HTTP Headers" bordered={false}>
@@ -64,16 +73,9 @@ export default class Status extends React.Component<StatusProps, {}> {
                             </Card>
                         </Spin>
                     </Col>
-
-                    <Col span={8}>
-                        <Spin spinning={this.props.crawlerStore.loading}>
-                            <Card title="RetireJS" bordered={false}>
-                                Checking all JavaScript found on the website against known vulnerabilities.
-                            </Card>
-                        </Spin>
-                    </Col>
                 </Row>
 
+                <h3>Vulnerabilities</h3>
 
                 <Row gutter={16}>
                     <Col span={8}>
@@ -85,9 +87,33 @@ export default class Status extends React.Component<StatusProps, {}> {
                     </Col>
 
                     <Col span={8}>
+                        <Spin spinning={this.props.crawlerStore.loading}>
+                            <Card title="RetireJS" bordered={false}>
+                                Checking all JavaScript found on the website against known vulnerabilities.
+                            </Card>
+                        </Spin>
+                    </Col>
+
+                    <Col span={8}>
+
+                    </Col>
+                </Row>
+
+                <h3>Web Application Scanners</h3>
+
+                <Row gutter={16}>
+                    <Col span={8}>
                         <Spin spinning={this.props.dirbStore.loading}>
                             <Card title="dirb" bordered={false}>
                                 Using the DIRB scanner, audit the website for existing (and possibly hidden) web objects.
+                            </Card>
+                        </Spin>
+                    </Col>
+
+                    <Col span={8}>
+                        <Spin spinning={this.props.niktoStore.loading}>
+                            <Card title="Nikto" bordered={false}>
+                                Using the Nikto scanner, test the web server for dangerous files/CGIs, outdated server software and other problems.
                             </Card>
                         </Spin>
                     </Col>

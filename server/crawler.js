@@ -8,6 +8,7 @@ const META_TAGS = require('./scripts/metatags');
 const SITEMAP = require('./scripts/sitemap');
 const WHOIS = require('./scripts/whois');
 const DIRB = require('./scripts/dirb');
+const NIKTO = require('./scripts/nikto');
 
 const {sendMsg} = require('./socket');
 const {fn} = require('./evaluatePage');
@@ -65,16 +66,18 @@ function launch() {
 
 /**
  *
- * @param domain
- * @param maxDepth
- * @param obey
- * @param hostname
+ * @param maxDepth {Integer}
+ * @param obey {Boolean}
+ * @param domain {String} www.akawebdesign.com
+ * @param hostname {String} akawebdesign.com
+ * @param url {String} https://www.akawebdesign.com
  * @return {Promise<void>}
  */
 async function crawl({url, domain, hostname, maxDepth, obey}) {
     NSLOOKUP.init(hostname);
     WHOIS.init(domain);
     DIRB.init(url);
+    NIKTO.init(url);
     WAPPALYZER.init(url, maxDepth);
     HEADERS.init();
     META_TAGS.init();

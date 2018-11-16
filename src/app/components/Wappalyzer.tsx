@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
-import {Table} from 'antd';
+import {Table, Spin} from 'antd';
 
 const WappValues = (values: Array<any>) => {
     const valueItems:any = [];
@@ -36,7 +36,9 @@ export default class Wappalyzer extends React.Component<WappalyzerProps, {}> {
         }];
 
         return  (
-            <Table columns={columns} dataSource={this.props.wappalyzerStore.data} />
+            <Spin tip="Loading..." spinning={this.props.wappalyzerStore.loading}>
+                <Table columns={columns} dataSource={this.props.wappalyzerStore.data} />
+            </Spin>
         );
     }
 }

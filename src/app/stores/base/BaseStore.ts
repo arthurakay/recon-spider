@@ -6,13 +6,13 @@ interface BaseStoreOptions {
     model: BaseModel,
     [id: string]: any,
     socketKey?: string,
-    streaming?: boolean
+    single?: boolean
 }
 
 class BaseStore<T extends BaseModel> {
     private socketKey: string = '';
 
-    public streaming: boolean = false;
+    public single: boolean = false;
     public model:BaseModel = null;
 
     @observable
@@ -33,8 +33,9 @@ class BaseStore<T extends BaseModel> {
             const global = (<any>window);
 
             global.SOCKET.on(this.socketKey, (jsonMsg: string) => {
-                // streaming responses should set their loading state in setData()
-                if (!this.streaming) {
+                // if there will only ever be a single request, update the loading state
+                // otherwise, responses should conditionally set their loading state in setData()
+                if (this.single) {
                     this.loading = false;
                 }
 

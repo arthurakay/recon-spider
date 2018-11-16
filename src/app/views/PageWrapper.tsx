@@ -23,6 +23,7 @@ const PageWrapperProvider = () => (
         dirbStore={Stores.dirbStore}
         headerStore={Stores.headerStore}
         metaTagsStore={Stores.metaTagsStore}
+        niktoStore={Stores.niktoStore}
         nsLookupStore={Stores.nsLookupStore}
         retireJsStore={Stores.retireJsStore}
         sitemapStore={Stores.sitemapStore}

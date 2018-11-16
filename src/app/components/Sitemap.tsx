@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
-import { Tree, Icon } from 'antd';
+import { Tree, Spin } from 'antd';
 import TreeNode from '../models/TreeNode';
 
 const TreeNodeComp = Tree.TreeNode;
@@ -58,15 +58,17 @@ export default class Sitemap extends React.Component<TreeProps, TreeState> {
             <div>
                 <h2>Sitemap</h2>
 
-                <Tree
-                    autoExpandParent
-                    defaultExpandAll
-                    defaultExpandParent
-                    onSelect={this.onSelect}
-                    selectedKeys={this.state.selectedKeys}
-                >
-                    {this.renderTreeNodes([this.props.sitemapStore.data])}
-                </Tree>
+                <Spin tip="Loading..." spinning={this.props.sitemapStore.loading}>
+                    <Tree
+                        autoExpandParent
+                        defaultExpandAll
+                        defaultExpandParent
+                        onSelect={this.onSelect}
+                        selectedKeys={this.state.selectedKeys}
+                    >
+                        {this.renderTreeNodes([this.props.sitemapStore.data])}
+                    </Tree>
+                </Spin>
             </div>
         );
     }

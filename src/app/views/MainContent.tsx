@@ -9,6 +9,7 @@ import RetireJs from '../components/RetireJs';
 import Wappalyzer from '../components/Wappalyzer';
 import WhoIs from '../components/WhoIs';
 import Dirb from '../components/Dirb';
+import Nikto from '../components/Nikto';
 import Status from '../components/Status';
 
 const SubMenu = Menu.SubMenu;
@@ -61,10 +62,13 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
                 display = <Dirb />;
                 break;
 
+            case 'nikto':
+                display = <Nikto />;
+                break;
+
             default:
                 display = <Status />;
         }
-
         return (
             <div className="MainContent-view">
                 <Menu
@@ -93,6 +97,7 @@ export default class MainContent extends React.Component<MainContentProps, {}> {
 
                     <SubMenu title={<span className="submenu-title-wrapper"><Icon type="audit" />Scanners</span>}>
                         <Menu.Item key="dirb">dirb</Menu.Item>
+                        <Menu.Item key="nikto">nikto</Menu.Item>
                     </SubMenu>
                 </Menu>
 

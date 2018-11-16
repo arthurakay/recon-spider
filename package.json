@@ -31,7 +31,7 @@
     "socket.io": "^2.1.1",
     "typescript": "^3.0.1",
     "urijs": "^1.19.1",
-    "wappalyzer": "^5.5.1"
+    "wappalyzer": "^5.5.5"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",

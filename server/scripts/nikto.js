@@ -2,7 +2,7 @@ const child_process = require('child_process');
 const readline = require('readline');
 const {sendMsg, getServer} = require('../socket');
 
-const DIRB = {
+const NIKTO = {
     complete: true,
     data: ''
 };
@@ -10,36 +10,36 @@ const DIRB = {
 /**
  * @param {string} domain e.g. https://akawebdesign.com
  */
-function dirb(domain) {
+function nikto(domain) {
     // reset the status
-    DIRB.complete = false;
+    NIKTO.complete = false;
 
-    const shell = child_process.spawn('dirb', [domain]);
+    const shell = child_process.spawn('nikto', ['-h', domain, '-Tuning', 'x']);
 
     readline.createInterface({
         input     : shell.stdout,
         terminal  : false
     }).on('line', function(line) {
-        DIRB.data += `${line}\n`;
-        sendMsg('dirb', JSON.stringify(DIRB));
+        NIKTO.data += `${line}\n`;
+        sendMsg('nikto', JSON.stringify(NIKTO));
     });
 
     shell.stderr.on('data', (data) => {
-        DIRB.data += `STDERR: ${data.toString()}\n`;
-        sendMsg('dirb', JSON.stringify(DIRB));
+        NIKTO.data += `STDERR: ${data.toString()}\n`;
+        sendMsg('nikto', JSON.stringify(NIKTO));
     });
 
     shell.on('close', (code) => {
-        DIRB.complete = true;
-        sendMsg('dirb', JSON.stringify(DIRB));
+        NIKTO.complete = true;
+        sendMsg('nikto', JSON.stringify(NIKTO));
     });
 
     shell.on('error', (err) => {
-        console.log(`DIRB error code: ${err.code}`);
-        console.log(`DIRB error message: ${error.message}`);
-        DIRB.data += `ERROR: ${err.message}\n`;
+        console.log(`NIKTO error code: ${err.code}`);
+        console.log(`NIKTO error message: ${error.message}`);
+        NIKTO.data += `ERROR: ${err.message}\n`;
 
-        sendMsg('dirb', JSON.stringify(DIRB));
+        sendMsg('nikto', JSON.stringify(NIKTO));
     });
 }
 
@@ -51,10 +51,10 @@ function init(domain) {
     const ioServer = getServer();
 
     ioServer.on('connection', () => {
-        sendMsg('dirb', JSON.stringify(DIRB));
+        sendMsg('nikto', JSON.stringify(NIKTO));
     });
 
-    dirb(domain);
+    nikto(domain);
 }
 
 module.exports = {

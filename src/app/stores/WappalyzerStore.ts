@@ -31,4 +31,10 @@ export default class WappalyzerStore extends BaseArrayStore {
             })
         );
     }
+
+    @action
+    setData(items: Array<any> = []): void {
+        this._data.replace(items);
+        this.loading = false;
+    }
 }

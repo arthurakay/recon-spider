@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import ValueItem from '../models/base/ValueItem';
-import {Table} from 'antd';
+import {Table, Spin} from 'antd';
 
 const RetireJsValues = (values: Array<any>) => {
     const valueItems:any = [];
@@ -67,7 +67,9 @@ export default class RetireJs extends React.Component<RetireJsProps, {}> {
         }];
 
         return  (
-            <Table columns={columns} dataSource={this.props.retireJsStore.data} />
+            <Spin tip="Loading..." spinning={this.props.retireJsStore.loading}>
+                <Table columns={columns} dataSource={this.props.retireJsStore.data} />
+            </Spin>
         );
     }
 }

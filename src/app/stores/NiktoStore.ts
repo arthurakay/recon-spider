@@ -1,20 +1,20 @@
 import {action, computed, observable, reaction} from 'mobx';
 import BaseStore from './base/BaseStore';
-import Dirb from '../models/Dirb';
+import Nikto from '../models/Nikto';
 import AllStores from './_AllStores';
 
-interface DirbResponse {
+interface NiktoResponse {
     data: string;
     complete: boolean;
 }
 
-export default class DirbStore extends BaseStore<Dirb> {
-    @observable _data: Dirb = null;
+export default class NiktoStore extends BaseStore<Nikto> {
+    @observable _data: Nikto = null;
 
     constructor() {
         super({
-            model: Dirb,
-            socketKey: 'dirb'
+            model: Nikto,
+            socketKey: 'nikto'
         });
     }
 
@@ -30,15 +30,15 @@ export default class DirbStore extends BaseStore<Dirb> {
     }
 
     @action
-    setData(response: DirbResponse): void {
-        this._data = new Dirb({
+    setData(response: NiktoResponse): void {
+        this._data = new Nikto({
             value: response.data
         });
         this.loading = !response.complete;
     }
 
     @computed
-    get data(): Dirb {
+    get data(): Nikto {
         return this._data;
     }
 }

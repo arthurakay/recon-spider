@@ -13,7 +13,8 @@ export default class NsLookupStore extends BaseStore<NsLookup> {
     constructor() {
         super({
             model: NsLookup,
-            socketKey: 'nslookup'
+            socketKey: 'nslookup',
+            single: true
         });
     }
 
